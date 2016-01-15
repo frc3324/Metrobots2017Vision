@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
 
     @Override
     public Mat onCameraFrame(Mat inputFrame) {
-        return inputFrame;
+        return CvUtils.rotate(inputFrame, 90);
     }
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        return inputFrame.rgba();
+        return CvUtils.rotate(inputFrame.rgba(), 90);
     }
 }
