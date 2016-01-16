@@ -9,6 +9,12 @@ import org.opencv.imgproc.Imgproc;
  * Created by Tasgo on 1/15/16.
  */
 public class CvUtils {
+    /**
+     * Rotate a Mat by the specified degree
+     * @param src The source Mat
+     * @param angle The angle by which to rotate by
+     * @return The rotated Mat
+     */
     public static Mat rotate(Mat src, double angle)
     {
         int len = src.cols() > src.rows() ? src.cols() : src.rows();
