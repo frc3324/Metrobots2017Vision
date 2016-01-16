@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         cameraView = (JavaCameraView) findViewById(R.id.cameraView);
         cameraView.setVisibility(SurfaceView.VISIBLE);
         cameraView.setCvCameraViewListener(cameraInterface);
+        cameraView.enableView();
     }
 
 }
