@@ -1,4 +1,4 @@
-package org.metrobots.botcv;
+package org.metrobots.botcv.cv;
 
 import android.content.Context;
 import android.graphics.ImageFormat;
@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.JavaCameraView;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;

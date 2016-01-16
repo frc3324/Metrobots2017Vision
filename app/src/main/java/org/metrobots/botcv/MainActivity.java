@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
 
+import org.metrobots.botcv.cv.BotCameraView;
+import org.metrobots.botcv.cv.CameraInterface;
+
 public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
     private BotCameraView cameraView;

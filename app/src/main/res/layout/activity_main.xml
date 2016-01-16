@@ -17,7 +17,7 @@
         android:nestedScrollingEnabled="false"
         android:onClick="pause" />
 
-    <org.metrobots.botcv.BotCameraView
+    <org.metrobots.botcv.cv.BotCameraView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cameraView"

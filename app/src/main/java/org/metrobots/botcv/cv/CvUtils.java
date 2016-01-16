@@ -1,4 +1,4 @@
-package org.metrobots.botcv;
+package org.metrobots.botcv.cv;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;

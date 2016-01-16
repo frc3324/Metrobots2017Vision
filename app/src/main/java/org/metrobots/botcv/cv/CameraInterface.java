@@ -1,10 +1,8 @@
-package org.metrobots.botcv;
+package org.metrobots.botcv.cv;
 
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-import org.opencv.core.Core;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 /**
  * Interface class for the camera
@@ -43,21 +41,18 @@ public class CameraInterface implements CvCameraViewListener {
 
     public Mat cameraFrame(Mat mat) {
         if (freezed) {
-            System.out.println("Freezed true, saving mat");
             frame = new Mat();
             mat.copyTo(frame);
             freezed = false;
         }
-        if (frame != null) {
-            System.out.println("frame not null, returning it");
+        if (frame != null)
             return frame;
-        }
+
         return mat;
     }
 
     public void switchPause() {
         paused = !paused;
-        System.out.println(paused);
         if (paused)
             freezed = true;
         else
