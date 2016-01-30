@@ -6,11 +6,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <org.opencv.android.JavaCameraView
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Quit"
+        android:id="@+id/btnQuit"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="false"
+        android:nestedScrollingEnabled="false"
+        android:onClick="quit" />
+
+    <org.metrobots.botcv.cv.BotCameraView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cameraView"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
