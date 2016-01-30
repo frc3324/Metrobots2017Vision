@@ -5,7 +5,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-/*
+/**
  * Created by Tasgo on 1/15/16.
  */
 public class CvUtils {
