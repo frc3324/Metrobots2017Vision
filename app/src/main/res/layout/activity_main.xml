@@ -6,22 +6,65 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOff="Pause"
-        android:textOn="Unpause"
-        android:id="@+id/btnPause"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:nestedScrollingEnabled="false"
-        android:onClick="pause" />
-
     <org.metrobots.botcv.cv.BotCameraView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cameraView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hueBarMax"
+        android:layout_alignParentEnd="true"
+        android:max="360"
+        android:indeterminate="false"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/satBarMax"
+        android:layout_below="@+id/hueBarMax"
+        android:layout_alignEnd="@+id/hueBarMax"
+        android:max="255"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/valBarMax"
+        android:layout_below="@+id/satBarMax"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/satBarMax"
+        android:max="255" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hueBarMin"
+        android:layout_above="@+id/satBarMin"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/satBarMin"
+        android:max="360" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/satBarMin"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/valBarMin"
+        android:layout_alignParentStart="true"
+        android:max="255" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/valBarMin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/satBarMin"
+        android:max="255" />
 
 </RelativeLayout>

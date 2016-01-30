@@ -2,6 +2,7 @@ package org.metrobots.botcv.cv;
 
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
 /**
@@ -11,7 +12,12 @@ import org.opencv.core.Mat;
 public class CameraInterface implements CvCameraViewListener {
     public boolean paused = false;
     private boolean freezed = false;
-    private Mat frame = null;
+    private Mat frame = new Mat(), buf = new Mat();
+    private LimiterSlider limiterSlider;
+
+    public CameraInterface(LimiterSlider limiterSlider) {
+        this.limiterSlider = limiterSlider;
+    }
 
     @Override
     public void onCameraViewStarted(int width, int height) {
@@ -40,15 +46,9 @@ public class CameraInterface implements CvCameraViewListener {
     }
 
     public Mat cameraFrame(Mat mat) {
-        if (freezed) {
-            frame = new Mat();
-            mat.copyTo(frame);
-            freezed = false;
-        }
-        if (frame != null)
-            return frame;
+        Core.inRange(mat, limiterSlider.getMin(), limiterSlider.getMax(), frame);
 
-        return mat;
+        return frame;
     }
 
     public void switchPause() {
