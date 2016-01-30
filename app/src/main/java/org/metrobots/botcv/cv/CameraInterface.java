@@ -10,8 +10,6 @@ import org.opencv.core.Mat;
  * Created by Tasgo on 1/16/16.
  */
 public class CameraInterface implements CvCameraViewListener {
-    public boolean paused = false;
-    private boolean freezed = false;
     private Mat frame = new Mat(), buf = new Mat();
     private LimiterSlider limiterSlider;
 
@@ -49,13 +47,5 @@ public class CameraInterface implements CvCameraViewListener {
         Core.inRange(mat, limiterSlider.getMin(), limiterSlider.getMax(), frame);
 
         return frame;
-    }
-
-    public void switchPause() {
-        paused = !paused;
-        if (paused)
-            freezed = true;
-        else
-            frame = null;
     }
 }
