@@ -8,8 +8,8 @@ public class LimiterSlider {
 
     public static final int HUE = 0, SATURATION = 1, VALUE = 2;
 
-    public SeekBarInterface[] minSliders = {new SeekBarInterface(), new SeekBarInterface(), new SeekBarInterface()};
-    public SeekBarInterface[] maxSliders = {new SeekBarInterface(), new SeekBarInterface(), new SeekBarInterface()};
+    public SeekBarInterface[] minSliders = {new SeekBarInterface(41), new SeekBarInterface(112), new SeekBarInterface(115)};
+    public SeekBarInterface[] maxSliders = {new SeekBarInterface(87), new SeekBarInterface(255), new SeekBarInterface(255)};
 
     public static class WrongSizeException extends Exception {
         public WrongSizeException() {

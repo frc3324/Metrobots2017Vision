@@ -12,7 +12,6 @@ import org.opencv.imgproc.Imgproc;
  */
 public class CameraInterface implements CvCameraViewListener {
     private Mat frame = new Mat();
-    private Mat gray = new Mat();
     private Mat hsv = new Mat();
     private LimiterSlider limiterSlider;
 
@@ -82,26 +81,11 @@ public class CameraInterface implements CvCameraViewListener {
     }*/
 
     public Mat cameraFrame(Mat mat) {
-        frame.empty();
-        gray.empty();
-        hsv.empty();
-        float hueMin = 80;
-        float hueMax = 155;
-        float satMin = 100;
-        float satMax = 255;
-        float valMin = 100;
-        float valMax = 255;
-        Scalar min = new Scalar(hueMin, satMin, valMin);
-        Scalar max = new Scalar(hueMax, satMax, valMax);
-        //Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV_FULL);
-        //Imgproc.adaptiveThreshold(gray, frame, 555, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 33, -3);
-        //Imgproc.threshold(gray, frame, 225, 255, Imgproc.THRESH_BINARY);
-        Core.inRange(hsv, min, max, frame);
-        //Imgproc.
-        //processMat(mat);
-        Core.inRange(mat, limiterSlider.getMin(), limiterSlider.getMax(), frame);
-
+        frame.empty(); hsv.empty();
+        Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
+        Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
+        System.out.println(limiterSlider.getMin());
+        System.out.println(limiterSlider.getMax());
         return frame;
     }
 }
