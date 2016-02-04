@@ -6,6 +6,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.SeekBar;
 
+import org.metrobots.botcv.communication.CommImpl;
+import org.metrobots.botcv.communication.CommInterface;
+import org.metrobots.botcv.communication.CommServer;
 import org.metrobots.botcv.cv.BotCameraView;
 import org.metrobots.botcv.cv.CameraInterface;
 import org.metrobots.botcv.cv.LimiterSlider;
@@ -13,8 +16,6 @@ import org.metrobots.botcv.cv.LimiterSlider;
 public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
     private BotCameraView cameraView;
-    private SeekBar hueBarMax;
-    private SeekBar satBarMax;
     private LimiterSlider limiterSlider = new LimiterSlider();
     private CameraInterface cameraInterface = new CameraInterface(limiterSlider);
 
@@ -33,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
         cameraView.setVisibility(SurfaceView.VISIBLE);
         cameraView.setCvCameraViewListener(cameraInterface);
         cameraView.enableView();
+
+        try {
+            new CommServer(new CommImpl()).start(5800);
+            System.out.println("Server started.");
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void initSliders() {
