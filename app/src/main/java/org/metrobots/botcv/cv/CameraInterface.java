@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+
 /**
  * Interface class for the camera
  * Created by Tasgo on 1/16/16.
@@ -116,14 +117,16 @@ public class CameraInterface implements CvCameraViewListener {
                 List<Point> l = contours.get(i).toList();
                 int s = l.size();
                 for(int a = 0; a < s-1; a++){
-                    Imgproc.line(mat, l.get(a), l.get(a+1), new Scalar(0, 0, 255));
+                    System.out.println(l.get(a));
+                    System.out.println(l.get(a + 1));
+                    //System.out.println(Math.sqrt((((l.get(a + 1).x)+(l.get(a).x))*((l.get(a + 1).x)+(l.get(a).x)))+(((l.get(a + 1).y)+(l.get(a).y))*((l.get(a + 1).y)+(l.get(a).y)))));
                     //System.out.println(l.get(a).toString());
 
                 }
             }
             //System.out.println(sum);
             //System.out.println(contours.get(0).depth());
-            //System.exit(0);
+            System.exit(0);
         }
         else{
             System.out.println("Sorry No Contours Avaiable.");
