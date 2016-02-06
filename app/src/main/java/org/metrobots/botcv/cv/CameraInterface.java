@@ -7,6 +7,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -92,21 +93,43 @@ public class CameraInterface implements CvCameraViewListener {
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
         Core.inRange(hsv, new Scalar(41, 112, 115), new Scalar(87, 255, 255), frame);
-        frame.copyTo(contourFrame);//frame.copyTo(contourFrame);
+        //frame.copyTo(contourFrame);//frame.copyTo(contourFrame);
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-        Imgproc.drawContours(contourFrame, contours, 0, new Scalar(0, 255, 0), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        //Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
         if(contours.size() != 0){
             //System.out.println(contours.size());//varied
             //System.out.println(contours.get(contours.size() - 1).width());//did not vary
             //System.out.println(contours.get(0).height());//height varies so its useful?
             //double[] d = contours.get(0).get(0,0);
             //System.out.println(d[0]);//with the tablet laying on the tape, gives the value 1
+            //Mat maxContour = null;
+            /*double maxContourarea=0;
+            for (int idx = 0; idx < contours.size(); idx++) {
+                Mat contour = contours.get(idx);
+                double contourarea = Imgproc.contourArea(contour);
+                System.out.println(contourarea);
+            }*/
+            //System.out.println(maxContour.get(0,0));
+            // System.exit(0);
+            int sum = 0;
+            for(int i = 0; i < contours.size(); i++){
+                List<Point> l = contours.get(i).toList();
+                int s = l.size();
+                for(int a = 0; a < s-1; a++){
+                    Imgproc.line(mat, l.get(a), l.get(a+1), new Scalar(0, 0, 255));
+                    //System.out.println(l.get(a).toString());
+
+                }
+            }
+            //System.out.println(sum);
+            //System.out.println(contours.get(0).depth());
+            //System.exit(0);
         }
         else{
             System.out.println("Sorry No Contours Avaiable.");
         }
         //System.out.println(limiterSlider.getMin());
         //System.out.println(limiterSlider.getMax());
-        return contourFrame;
+        return mat;
     }
 }
