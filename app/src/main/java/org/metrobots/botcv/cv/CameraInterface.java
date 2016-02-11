@@ -93,64 +93,37 @@ public class CameraInterface implements CvCameraViewListener {
     public Mat cameraFrame(Mat mat) {
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
-        Core.inRange(hsv, new Scalar(41, 112, 115), new Scalar(87, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(45, 112, 115), new Scalar(67, 255, 255), frame);
+        //41,112,115 87,255,255
+        //Core.inRange(hsv,limiterSlider.getMin(), limiterSlider.getMax() , frame);
         //frame.copyTo(contourFrame);//frame.copyTo(contourFrame);
 
+        //clearing up the small useless bits of 'green' that are irrelevent
+        //but leaving the original mat unaffected
+        //
+        Size erdVal = new Size(4, 4);
+        Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
 
-        Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        //*/
+        Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
         //Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
-        Scalar color = new Scalar(255, 0, 0);
+
+        Scalar color = new Scalar(255, 0, 0); // color for outlining the contours
+        double max = 1000;
+
         for (int a = 0; a < contours.size()-1; a++) {
             List<Point> l = contours.get(a).toList();
             int s = l.size();
-            for (int b = 0; b < s-1; b++) {
+            for (int b = 0; b < s - 1; b++) {
                 double s2 = Imgproc.contourArea(contours.get(a));
-                if (s2 > 1000) {
+                if (s2 > max) {
                     Imgproc.line(mat, l.get(b), l.get(b + 1), color, 7);
                 }
             }
         }
-        /*
-        if(contours.size() != 0){
-            //System.out.println(contours.size());//varied
-            //System.out.println(contours.get(contours.size() - 1).width());//did not vary
-            //System.out.println(contours.get(0).height());//height varies so its useful?
-            //double[] d = contours.get(0).get(0,0);
-            //System.out.println(d[0]);//with the tablet laying on the tape, gives the value 1
-            //Mat maxContour = null;
-            /*double maxContourarea=0;
-            for (int idx = 0; idx < contours.size(); idx++) {
-                Mat contour = contours.get(idx);
-                double contourarea = Imgproc.contourArea(contour);
-                System.out.println(contourarea);
-            }*/
-            //System.out.println(maxContour.get(0,0));
-            // System.exit(0);
-            /*
-            int sum = 0;
-            for(int i = 0; i < contours.size(); i++){
-                List<Point> l = contours.get(i).toList();
-                int s = l.size();
-               /* for(int a = 0; a < s-1; a++){
-
-                    //System.out.println(l.get(a));
-                    //System.out.println(l.get(a + 1));
-                    //System.out.println(Math.sqrt((((l.get(a + 1).x)+(l.get(a).x))*((l.get(a + 1).x)+(l.get(a).x)))+(((l.get(a + 1).y)+(l.get(a).y))*((l.get(a + 1).y)+(l.get(a).y)))));
-                    //System.out.println(l.get(a).toString());
-
-                }/
-            }
-
-            //System.out.println(sum);
-            //System.out.println(contours.get(0).depth());
-            System.exit(0);
-        }
-        else{
-            System.out.println("Sorry No Contours Avaiable.");
-        }
-                */
-        //System.out.println(limiterSlider.getMin());
-        //System.out.println(limiterSlider.getMax());
         return mat;
     }
 }
