@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import org.metrobots.botcv.communication.CommImpl;
 import org.metrobots.botcv.communication.CommInterface;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         cameraView.enableView();
 
         try {
-            new CommServer(new CommImpl()).start(5800);
+            new CommServer(new CommImpl(this)).start(5800);
             System.out.println("Server started.");
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -49,5 +50,9 @@ public class MainActivity extends AppCompatActivity {
         ((SeekBar) findViewById(R.id.hueBarMax)).setOnSeekBarChangeListener(limiterSlider.maxSliders[0]);
         ((SeekBar) findViewById(R.id.satBarMax)).setOnSeekBarChangeListener(limiterSlider.maxSliders[1]);
         ((SeekBar) findViewById(R.id.valBarMax)).setOnSeekBarChangeListener(limiterSlider.maxSliders[2]);
+    }
+
+    public void toast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }

@@ -2,9 +2,11 @@ package org.metrobots.botcv.communication;
 
 import net.sf.lipermi.exception.LipeRMIException;
 import net.sf.lipermi.handler.CallHandler;
+import net.sf.lipermi.net.IServerListener;
 import net.sf.lipermi.net.Server;
 
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  * Created by Tasgo on 2/3/16.
@@ -20,6 +22,18 @@ public class CommServer {
     }
 
     public void start(int port) throws IOException {
-        new Server().bind(port, handler);
+        Server server = new Server();
+        server.bind(port, handler);
+        /*server.addServerListener(new IServerListener() {
+            @Override
+            public void clientConnected(Socket socket) {
+                System.out.println("Client connected.");
+            }
+
+            @Override
+            public void clientDisconnected(Socket socket) {
+                System.out.println("Client disconnected.s");
+            }
+        });*/
     }
 }

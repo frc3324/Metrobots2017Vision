@@ -101,7 +101,7 @@ public class CameraInterface implements CvCameraViewListener {
         //clearing up the small useless bits of 'green' that are irrelevent
         //but leaving the original mat unaffected
         //
-        Size erdVal = new Size(4, 4);
+        Size erdVal = new Size(3, 3);
         Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
@@ -109,8 +109,8 @@ public class CameraInterface implements CvCameraViewListener {
 
         //*/
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
-        //Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
-
+        Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        /*
         Scalar color = new Scalar(255, 0, 0); // color for outlining the contours
         double max = 1000;
 
@@ -124,6 +124,7 @@ public class CameraInterface implements CvCameraViewListener {
                 }
             }
         }
+        */
         return mat;
     }
 }
