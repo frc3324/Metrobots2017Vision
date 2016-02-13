@@ -91,27 +91,31 @@ public class CameraInterface implements CvCameraViewListener {
     }*/
 
     public Mat cameraFrame(Mat mat) {
-        frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
+        //Size erdVal = new Size(4, 4);
+        frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();// hierarchy.empty();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
-        Core.inRange(hsv, new Scalar(45, 112, 115), new Scalar(67, 255, 255), frame);
+        //Imgproc.blur(hsv, hsv, erdVal);
+        //Imgproc.dilate(hsv, hsv, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
         //41,112,115 87,255,255
         //Core.inRange(hsv,limiterSlider.getMin(), limiterSlider.getMax() , frame);
         //frame.copyTo(contourFrame);//frame.copyTo(contourFrame);
-
+        Imgproc.medianBlur(frame, frame, 5);
         //clearing up the small useless bits of 'green' that are irrelevent
         //but leaving the original mat unaffected
         //
-        Size erdVal = new Size(4, 4);
-        Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        //Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        //Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        //Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        //Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));*/
+        //Imgproc.blur(frame, frame, erdVal);
 
+        frame.copyTo(contourFrame);
         //*/
-        Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
-        //Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
 
-        Scalar color = new Scalar(255, 0, 0); // color for outlining the contours
+        /*Scalar color = new Scalar(255, 0, 0); // color for outlining the contours
         double max = 1000;
 
         for (int a = 0; a < contours.size()-1; a++) {
@@ -123,7 +127,7 @@ public class CameraInterface implements CvCameraViewListener {
                     Imgproc.line(mat, l.get(b), l.get(b + 1), color, 7);
                 }
             }
-        }
+        }*/
         return mat;
     }
 }
