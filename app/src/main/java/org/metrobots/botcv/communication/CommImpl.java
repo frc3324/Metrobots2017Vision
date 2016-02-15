@@ -16,9 +16,12 @@ public class CommImpl implements CommInterface {
     }
 
     @Override
-    public void print(String text) {
-        //Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-        System.out.println(text);
-        activity.toast(text);
+    public float[] getGyro() {
+        return activity.getPeripheralManager().getGyroData();
+    }
+
+    @Override
+    public float[] getAccelerometer() {
+        return activity.getPeripheralManager().getAccelerometerData();
     }
 }

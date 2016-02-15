@@ -13,12 +13,14 @@ import org.metrobots.botcv.communication.CommServer;
 import org.metrobots.botcv.cv.BotCameraView;
 import org.metrobots.botcv.cv.CameraInterface;
 import org.metrobots.botcv.cv.LimiterSlider;
+import org.metrobots.botcv.peripheral.PeripheralManager;
 
 public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
     private BotCameraView cameraView;
     private LimiterSlider limiterSlider = new LimiterSlider();
     private CameraInterface cameraInterface = new CameraInterface(limiterSlider);
+    private PeripheralManager peripheralManager;
 
     static {
         System.loadLibrary("opencv_java3");
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initSliders();
+        peripheralManager = new PeripheralManager(this);
 
         cameraView = (BotCameraView) findViewById(R.id.cameraView);
         cameraView.setVisibility(SurfaceView.VISIBLE);
@@ -54,5 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public PeripheralManager getPeripheralManager() {
+        return peripheralManager;
     }
 }

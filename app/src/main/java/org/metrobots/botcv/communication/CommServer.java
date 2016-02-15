@@ -24,16 +24,5 @@ public class CommServer {
     public void start(int port) throws IOException {
         Server server = new Server();
         server.bind(port, handler);
-        /*server.addServerListener(new IServerListener() {
-            @Override
-            public void clientConnected(Socket socket) {
-                System.out.println("Client connected.");
-            }
-
-            @Override
-            public void clientDisconnected(Socket socket) {
-                System.out.println("Client disconnected.s");
-            }
-        });*/
     }
 }
