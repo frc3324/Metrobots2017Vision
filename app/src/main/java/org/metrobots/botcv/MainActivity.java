@@ -6,6 +6,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import android.hardware.*;
+import java.lang.Math;
 
 import org.metrobots.botcv.communication.CommImpl;
 import org.metrobots.botcv.communication.CommInterface;

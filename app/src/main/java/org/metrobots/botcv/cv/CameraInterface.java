@@ -91,23 +91,27 @@ public class CameraInterface implements CvCameraViewListener {
     }*/
 
     public Mat cameraFrame(Mat mat) {
-        //Size erdVal = new Size(4, 4);
+        Size erdVal = new Size(4, 4);
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();// hierarchy.empty();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
         //Imgproc.blur(hsv, hsv, erdVal);
         //Imgproc.dilate(hsv, hsv, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
+        //Core.inRange(hsv, new Scalar(68.75, 61, 92), new Scalar(90, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(50, 40, 115), new Scalar(70, 255, 255), frame);
         //41,112,115 87,255,255
         //Core.inRange(hsv,limiterSlider.getMin(), limiterSlider.getMax() , frame);
         //frame.copyTo(contourFrame);//frame.copyTo(contourFrame);
         Imgproc.medianBlur(frame, frame, 5);
-        //clearing up the small useless bits of 'green' that are irrelevent
-        //but leaving the original mat unaffected
-        //Hello
         //Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         //Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         //Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        //Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));*/
+        //clearing up the small useless bits of 'green' that are irrelevent
+        //but leaving the original mat unaffected
+        //Hello
+        /*Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
+        Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));*/
         //Imgproc.blur(frame, frame, erdVal);
 
         frame.copyTo(contourFrame);
