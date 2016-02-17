@@ -91,7 +91,7 @@ public class CameraInterface implements CvCameraViewListener {
     }*/
 
     public Mat cameraFrame(Mat mat) {
-        Size erdVal = new Size(4, 4);
+        //Size erdVal = new Size(4, 4);
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();// hierarchy.empty();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
         //Imgproc.blur(hsv, hsv, erdVal);
