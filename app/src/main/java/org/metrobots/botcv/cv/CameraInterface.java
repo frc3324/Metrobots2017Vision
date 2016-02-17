@@ -107,7 +107,7 @@ public class CameraInterface implements CvCameraViewListener {
         //Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         //clearing up the small useless bits of 'green' that are irrelevent
         //but leaving the original mat unaffected
-        ///Hello
+        ////Hello
         /*Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
         Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
