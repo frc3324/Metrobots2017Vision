@@ -6,7 +6,7 @@ import android.widget.Toast;
 import org.metrobots.botcv.MainActivity;
 
 /**
- * Created by Tasgo on 2/3/16.
+ * Implementation of the CommInterface.
  */
 public class CommImpl implements CommInterface {
     private MainActivity activity;

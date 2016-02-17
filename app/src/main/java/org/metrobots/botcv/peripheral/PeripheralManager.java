@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 /**
- * Created by Tasgo on 2/13/2016.
+ * Gyro and accelerometer manager.
  */
 public class PeripheralManager implements SensorEventListener {
     private SensorManager manager;

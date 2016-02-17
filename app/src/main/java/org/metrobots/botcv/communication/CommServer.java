@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * Created by Tasgo on 2/3/16.
+ * Main communications server.
  */
 public class CommServer {
     private CommImpl implementation;
