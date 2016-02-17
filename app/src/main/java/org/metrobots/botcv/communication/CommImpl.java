@@ -6,7 +6,7 @@ import android.widget.Toast;
 import org.metrobots.botcv.MainActivity;
 
 /**
- * Created by Tasgo on 2/3/16.
+ * Implementation of the CommInterface.
  */
 public class CommImpl implements CommInterface {
     private MainActivity activity;
@@ -16,9 +16,12 @@ public class CommImpl implements CommInterface {
     }
 
     @Override
-    public void print(String text) {
-        //Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-        System.out.println(text);
-        activity.toast(text);
+    public float[] getOrientation(boolean returnAngle) {
+        return activity.getPeripheralManager().getGyro().getAngle(returnAngle);
+    }
+
+    @Override
+    public float[] getAccelerometer() {
+        return activity.getPeripheralManager().getAccelerometerData();
     }
 }
