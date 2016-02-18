@@ -11,13 +11,15 @@ import android.hardware.SensorManager;
  */
 public class PeripheralManager implements SensorEventListener {
     private SensorManager manager;
-    private Sensor acceleremoter, gyro;
-    private float[] gyroData = new float[3], accelerometerData = new float[3];
+    private Sensor acceleremoterSensor, gyroSensor, magneticSensor;
+    private float[] gyroData = new float[3], accelerometerData = new float[3], magneticData = new float[3];
+    private Gyro gyro;
 
     public PeripheralManager(Context parent) {
         manager = (SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
-        acceleremoter = manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        gyro = manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        acceleremoterSensor = manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        gyroSensor = manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        magneticSensor = manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
     @Override
@@ -25,9 +27,15 @@ public class PeripheralManager implements SensorEventListener {
         switch (sensorEvent.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
                 accelerometerData = sensorEvent.values;
+                gyro.updateAccel(accelerometerData);
                 break;
             case Sensor.TYPE_GYROSCOPE:
                 gyroData = sensorEvent.values;
+                gyro.updateGyro(gyroData);
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                magneticData = sensorEvent.values;
+                gyro.updateMag(magneticData);
                 break;
         }
     }
@@ -37,8 +45,8 @@ public class PeripheralManager implements SensorEventListener {
 
     }
 
-    public float[] getGyroData() {
-        return gyroData;
+    public Gyro getGyro() {
+        return gyro;
     }
 
     public float[] getAccelerometerData() {

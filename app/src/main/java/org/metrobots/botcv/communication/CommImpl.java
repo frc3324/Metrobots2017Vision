@@ -16,8 +16,8 @@ public class CommImpl implements CommInterface {
     }
 
     @Override
-    public float[] getGyro() {
-        return activity.getPeripheralManager().getGyroData();
+    public float[] getOrientation(boolean returnAngle) {
+        return activity.getPeripheralManager().getGyro().getAngle(returnAngle);
     }
 
     @Override
