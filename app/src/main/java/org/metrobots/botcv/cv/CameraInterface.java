@@ -21,12 +21,10 @@ public class CameraInterface implements CvCameraViewListener {
     private Mat frame = new Mat();
     private Mat hsv = new Mat();
     private Mat hierarchy = new Mat();
-    private ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+    public ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
     private LimiterSlider limiterSlider;
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
-    Point centroid = new Point();
-    private List<Moments> mu = new ArrayList<Moments>(contours.size());
 
     public CameraInterface(LimiterSlider limiterSlider) {
         this.limiterSlider = limiterSlider;
@@ -60,32 +58,31 @@ public class CameraInterface implements CvCameraViewListener {
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
         //Core.inRange(hsv, new Scalar(55, 40, 125), new Scalar(70, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(46, 112, 115), new Scalar(70, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(46, 112, 100), new Scalar(70, 255, 255), frame);
         Imgproc.medianBlur(frame, frame, 5);
 
         frame.copyTo(contourFrame);
-        try{
-            Rect place = Imgproc.boundingRect(contours.get(0));
-            Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
-        }
-        catch(Exception e){
-            //System.out.println(e);
-        }
-        //Rect place = Imgproc.boundingRect(contours.get(0));
 
-        Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
-
-        //frame.copyTo(contourFrame);
-        //*/
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+
+        try{
+            Rect place = Imgproc.boundingRect(contours.get(0));
+            Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0), 10, Imgproc.LINE_8, 0);
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
         try {
-            double max = 0;
+            int max = 0;
             for (int a=0;a<contours.size();a++){
                 //List<Point> l = contours.get(a).toList();
                 //int s = l.size();
                 //for (int b=0; b < s; b++) {
                     double s2 = Imgproc.contourArea(contours.get(a));
+                    if (s2 > Imgproc.contourArea(contours.get(max))) {
+                        max = a;
+                    }
                     //System.out.println(a+": "+s2);
                 //}
             }
