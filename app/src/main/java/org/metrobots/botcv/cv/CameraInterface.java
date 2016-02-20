@@ -44,14 +44,17 @@ public class CameraInterface implements CvCameraViewListener {
 
     @Override
     public Mat onCameraFrame(Mat inputFrame) {
+
         return cameraFrame(inputFrame);
     }
 
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+
         return cameraFrame(inputFrame.rgba());
     }
+
 
     public Mat cameraFrame(Mat mat) {
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
@@ -70,13 +73,7 @@ public class CameraInterface implements CvCameraViewListener {
         }
         //Rect place = Imgproc.boundingRect(contours.get(0));
 
-        //Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
-        //Core.inRange(hsv, new Scalar(55, 45, 125), new Scalar(70, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(47.5, 107, 125), new Scalar(70, 255, 255), frame);
-        Imgproc.medianBlur(frame, frame, 5);
-        //clearing up the small useless bits of 'green' that are irrelevent
-        //but leaving the original mat unaffected
-        //Imgproc.blur(frame, frame, erdVal);
+        Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
 
         //frame.copyTo(contourFrame);
         //*/
