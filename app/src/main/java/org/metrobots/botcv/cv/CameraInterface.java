@@ -5,6 +5,7 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.core.*;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,8 @@ public class CameraInterface implements CvCameraViewListener {
     private LimiterSlider limiterSlider;
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
+    Point centroid = new Point();
+    private List<Moments> mu = new ArrayList<Moments>(contours.size());
 
     public CameraInterface(LimiterSlider limiterSlider) {
         this.limiterSlider = limiterSlider;
@@ -31,8 +34,7 @@ public class CameraInterface implements CvCameraViewListener {
 
     @Override
     public void onCameraViewStarted(int width, int height) {
-        //Mat frame = new Mat();
-        //frame.
+
     }
 
     @Override
@@ -42,96 +44,32 @@ public class CameraInterface implements CvCameraViewListener {
 
     @Override
     public Mat onCameraFrame(Mat inputFrame) {
-        //Mat mRgba = inputFrame;
-        //Mat mRgbaT = mRgba.t();
-        //Core.flip(mRgba.t(), mRgbaT, 1);
-        //Imgproc.resize(mRgbaT, mRgbaT, mRgba.size());
-        //return mRgbaT;
+
         return cameraFrame(inputFrame);
     }
 
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        //processImage(inputFrame);
-        //Mat newMa = new Mat();
-        //Imgproc.cvtColor(frame, newMa, Imgproc.COLOR_BGR2HSV);
-        //frame = new Mat();
-        //cameraFrame(inputFrame.gray()).copyTo(frame);
+
         return cameraFrame(inputFrame.rgba());
     }
 
-    /*public Mat getThreshold(){
-        Mat newMa = new Mat();
-        Imgproc.cvtColor(frame, newMa, Imgproc.COLOR_BGR2HSV);
-        //Scalar max = Scalar(38, 255, 255);
-        //Scalar min = Scalar(16, 216, 100);
-        //Size Imgproc.erodeVals = (10, 10);
-        Mat threshold;
-        //Core.inRange(newMa, min, max, threshold);
-        int ErosionElement = 0;
-        int ErosionSize = 0;
-        int DialationELement = 0;
-        int DialationSize = 0;
-        int MaxElement = 2;
-        int MaxKernelSize = 21;
-
-        Size sze = (2*ErosionSize+1,2*ErosionSize+1);
-        Point pts = (ErosionSize,ErosionSize);
-        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE,
-               sze,
-                pts);
-
-        Imgproc.erode(threshold, threshold, element);//Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erodeVals));
-        Imgproc.dilate(threshold,  threshold, element);//Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erodeVals));
-        Imgproc.dilate(threshold, threshold, element);//Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erodeVals));
-        Imgproc.erode(threshold, threshold, element);//Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erodeVals));
-        return threshold;
-        //return newMa;
-    }*/
 
     public Mat cameraFrame(Mat mat) {
-        //Size erdVal = new Size(4, 4);
-        frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();// hierarchy.empty();
+        frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
-        //Imgproc.blur(hsv, hsv, erdVal);
-        //Imgproc.dilate(hsv, hsv, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        //Core.inRange(hsv, new Scalar(68.75, 61, 92), new Scalar(90, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(50, 40, 115), new Scalar(70, 255, 255), frame);
-        //41,112,115 87,255,255
-        //Core.inRange(hsv,limiterSlider.getMin(), limiterSlider.getMax() , frame);
-        //frame.copyTo(contourFrame);//frame.copyTo(contourFrame);
+        //Core.inRange(hsv, new Scalar(55, 40, 125), new Scalar(70, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(46, 112, 115), new Scalar(70, 255, 255), frame);
         Imgproc.medianBlur(frame, frame, 5);
-        //Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        //Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        //Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        //clearing up the small useless bits of 'green' that are irrelevent
-        //but leaving the original mat unaffected
-        ////Hello
-        /*Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Imgproc.dilate(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));
-        Imgproc.erode(frame, frame, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, erdVal));*/
-        //Imgproc.blur(frame, frame, erdVal);
 
         frame.copyTo(contourFrame);
-        //*/
-        Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
-        Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        Rect place = Imgproc.boundingRect(contours.get(0));
 
-        /*Scalar color = new Scalar(255, 0, 0); // color for outlining the contours
-        double max = 1000;
+        Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
 
-        for (int a = 0; a < contours.size()-1; a++) {
-            List<Point> l = contours.get(a).toList();
-            int s = l.size();
-            for (int b = 0; b < s - 1; b++) {
-                double s2 = Imgproc.contourArea(contours.get(a));
-                if (s2 > max) {
-                    Imgproc.line(mat, l.get(b), l.get(b + 1), color, 7);
-                }
-            }
-        }*/
+
         return mat;
     }
+
 }
