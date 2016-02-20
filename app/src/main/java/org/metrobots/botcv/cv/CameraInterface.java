@@ -44,17 +44,14 @@ public class CameraInterface implements CvCameraViewListener {
 
     @Override
     public Mat onCameraFrame(Mat inputFrame) {
-
         return cameraFrame(inputFrame);
     }
 
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-
         return cameraFrame(inputFrame.rgba());
     }
-
 
     public Mat cameraFrame(Mat mat) {
         frame.empty(); hsv.empty(); hierarchy.empty(); contours.clear();
@@ -64,11 +61,61 @@ public class CameraInterface implements CvCameraViewListener {
         Imgproc.medianBlur(frame, frame, 5);
 
         frame.copyTo(contourFrame);
-        Rect place = Imgproc.boundingRect(contours.get(0));
+        try{
+            Rect place = Imgproc.boundingRect(contours.get(0));
+            Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
+        }
+        catch(Exception e){
+            //System.out.println(e);
+        }
+        //Rect place = Imgproc.boundingRect(contours.get(0));
 
-        Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
+        //Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0));
+        //Core.inRange(hsv, new Scalar(55, 45, 125), new Scalar(70, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(47.5, 107, 125), new Scalar(70, 255, 255), frame);
+        Imgproc.medianBlur(frame, frame, 5);
+        //clearing up the small useless bits of 'green' that are irrelevent
+        //but leaving the original mat unaffected
+        //Imgproc.blur(frame, frame, erdVal);
 
+        //frame.copyTo(contourFrame);
+        //*/
+        Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        try {
+            double max = 0;
+            for (int a=0;a<contours.size();a++){
+                //List<Point> l = contours.get(a).toList();
+                //int s = l.size();
+                //for (int b=0; b < s; b++) {
+                    double s2 = Imgproc.contourArea(contours.get(a));
+                    //System.out.println(a+": "+s2);
+                //}
+            }
 
+            double contors = 0;
+            if (Imgproc.contourArea(contours.get(0)) != 0.0){
+                contors = Imgproc.contourArea(contours.get(0));
+            }
+            double contors1 = 0;
+            if (Imgproc.contourArea(contours.get(1)) != 0.0){
+                contors = Imgproc.contourArea(contours.get(1));
+            }
+            double contors2 = 0;
+            if (Imgproc.contourArea(contours.get(2)) != 0.0){
+                contors = Imgproc.contourArea(contours.get(2));
+            }
+            System.out.println("Contour 1: " + contors + "\nContour 2: " + contors1 + "\nContour 3: " + contors2);
+            System.out.println(contours.size());
+            //System.out.println(hierarchy.get(0,0).getClass().getName());
+            //System.out.println("\n\n\n\n");
+            /*Integer widh = contours.get(1).width();
+            Integer heigt = contours.get(1).height();
+            System.out.println("(" + widh + "," + heigt + ')');*/
+        }
+        catch (Exception e) {
+            //e.printStackTrace();
+        }
         return mat;
     }
 
