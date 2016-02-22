@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initSliders();
         peripheralManager = new PeripheralManager(this);
 
         cameraView = (BotCameraView) findViewById(R.id.cameraView);
@@ -47,15 +46,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    public void initSliders() {
-        ((SeekBar) findViewById(R.id.hueBarMin)).setOnSeekBarChangeListener(limiterSlider.minSliders[0]);
-        ((SeekBar) findViewById(R.id.satBarMin)).setOnSeekBarChangeListener(limiterSlider.minSliders[1]);
-        ((SeekBar) findViewById(R.id.valBarMin)).setOnSeekBarChangeListener(limiterSlider.minSliders[2]);
-
-        ((SeekBar) findViewById(R.id.hueBarMax)).setOnSeekBarChangeListener(limiterSlider.maxSliders[0]);
-        ((SeekBar) findViewById(R.id.satBarMax)).setOnSeekBarChangeListener(limiterSlider.maxSliders[1]);
-        ((SeekBar) findViewById(R.id.valBarMax)).setOnSeekBarChangeListener(limiterSlider.maxSliders[2]);
-    }
 
     public void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
