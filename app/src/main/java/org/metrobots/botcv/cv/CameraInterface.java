@@ -5,12 +5,8 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.core.*;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
 
 
 /**
@@ -22,14 +18,13 @@ public class CameraInterface implements CvCameraViewListener {
     private Mat frame = new Mat();
     private Mat hsv = new Mat();
     private Mat hierarchy = new Mat();
-    private ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-    private LimiterSlider limiterSlider;
+    private ArrayList<MatOfPoint> contours = new ArrayList<>();
+    public LimiterSlider limiterSlider;
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
-    Point centroid = new Point();
-    private List<Moments> mu = new ArrayList<Moments>(contours.size());
 
-    public CameraInterface(LimiterSlider limiterSlider) {
+
+    public CameraInterface(LimiterSlider limiterSlider){
         this.limiterSlider = limiterSlider;
     }
 
@@ -100,11 +95,16 @@ public class CameraInterface implements CvCameraViewListener {
                     //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
                 if (width < 90){
-                    /* Tells rio its position so it can
-                    move forward when in targeting mode. */
+                    //Tells Rio to move further away during Targeting modes
+                    System.out.println("Width is less than 90");
                 }
-                if (width >110){
-                    // Tells Rio to move closer during Targeting modes
+                else if (width > 110){
+                    // Tells Rio to move robot closer during Targeting modes
+                    System.out.println("Width is greater than 110");
+                }
+                else{
+                    //Tell Rio not to move robot during Targeting modes
+                    System.out.println("Don't move Mr. Robot");
                 }
                     //Finding the middle of the countoured area on the screen
                 center.x = (topleft.x+bottomright.x)/2;
