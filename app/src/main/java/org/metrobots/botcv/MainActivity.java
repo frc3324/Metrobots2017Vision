@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         peripheralManager = new PeripheralManager(this);
 
         cameraView = (BotCameraView) findViewById(R.id.cameraView);
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Server started.");
         } catch (Exception e) { e.printStackTrace(); }
     }
-
 
     public void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();

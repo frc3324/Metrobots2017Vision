@@ -5,8 +5,12 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.core.*;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
 
 
 /**
@@ -22,9 +26,8 @@ public class CameraImpl implements CvCameraViewListener {
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
     private int status = 2;
-
-
-    public CameraImpl(){
+   
+    public CameraImpl() {
     }
 
     @Override
