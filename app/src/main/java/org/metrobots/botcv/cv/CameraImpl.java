@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Vector;
 
 
-/**
+/*
  * Interface class for the camera
  * Created by Tasgo on 1/16/16.
  */
@@ -126,11 +126,9 @@ public class CameraImpl implements CvCameraViewListener {
         catch (Exception e) {
             //In case no contours are found
         }
-            //Returns the original image with drawn contours
+            //Returns the original image with drawn contours and shape identifiers
         return mat;
     }
 
-    public int getStatus() {
-        return status;
-    }
+    public int getStatus() {return status;}
 }
