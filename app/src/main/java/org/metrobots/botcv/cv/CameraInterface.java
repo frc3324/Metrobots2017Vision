@@ -21,10 +21,12 @@ public class CameraInterface implements CvCameraViewListener {
     private Mat frame = new Mat();
     private Mat hsv = new Mat();
     private Mat hierarchy = new Mat();
-    public ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+    private ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
     private LimiterSlider limiterSlider;
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
+    Point centroid = new Point();
+    private List<Moments> mu = new ArrayList<Moments>(contours.size());
 
     public CameraInterface(LimiterSlider limiterSlider) {
         this.limiterSlider = limiterSlider;
@@ -65,7 +67,7 @@ public class CameraInterface implements CvCameraViewListener {
 
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
-
+        /*
         try{
             Rect place = Imgproc.boundingRect(contours.get(0));
             Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0), 10, Imgproc.LINE_8, 0);
@@ -73,42 +75,45 @@ public class CameraInterface implements CvCameraViewListener {
         catch(Exception e) {
             System.out.println(e);
         }
+*/
         try {
             int max = 0;
             for (int a=0;a<contours.size();a++){
-                //List<Point> l = contours.get(a).toList();
-                //int s = l.size();
-                //for (int b=0; b < s; b++) {
+
                     double s2 = Imgproc.contourArea(contours.get(a));
                     if (s2 > Imgproc.contourArea(contours.get(max))) {
                         max = a;
                     }
-                    //System.out.println(a+": "+s2);
-                //}
             }
 
-            double contors = 0;
-            if (Imgproc.contourArea(contours.get(0)) != 0.0){
-                contors = Imgproc.contourArea(contours.get(0));
+            try{
+                Rect place = Imgproc.boundingRect(contours.get(max));
+                Point center = new Point();
+
+                Point topleft = place.tl();
+                Point bottomright = place.br();
+
+                double width = (bottomright.x - topleft.x);
+                if (width < 90){
+                    /* Tells rio its position so it can
+                    move forward when in targeting mode. */
+                }
+                if (width >110){
+                    // Tells Rio to move closer during Targeting mode
+
+                }
+
+                center.x = (topleft.x+bottomright.x)/2;
+                center.y = (topleft.y+bottomright.y)/2;
+
+                Imgproc.circle(mat, center, 25, new Scalar(255,0,255), 10, Imgproc.LINE_8, 0);
+                Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0), 10, Imgproc.LINE_8, 0);
             }
-            double contors1 = 0;
-            if (Imgproc.contourArea(contours.get(1)) != 0.0){
-                contors = Imgproc.contourArea(contours.get(1));
+            catch(Exception e) {
+                System.out.println(e);
             }
-            double contors2 = 0;
-            if (Imgproc.contourArea(contours.get(2)) != 0.0){
-                contors = Imgproc.contourArea(contours.get(2));
-            }
-            System.out.println("Contour 1: " + contors + "\nContour 2: " + contors1 + "\nContour 3: " + contors2);
-            System.out.println(contours.size());
-            //System.out.println(hierarchy.get(0,0).getClass().getName());
-            //System.out.println("\n\n\n\n");
-            /*Integer widh = contours.get(1).width();
-            Integer heigt = contours.get(1).height();
-            System.out.println("(" + widh + "," + heigt + ')');*/
         }
         catch (Exception e) {
-            //e.printStackTrace();
         }
         return mat;
     }
