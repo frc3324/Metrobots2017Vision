@@ -99,7 +99,7 @@ public class CameraInterface implements CvCameraViewListener {
                     move forward when in targeting mode. */
                 }
                 if (width >110){
-                    // Tells Rio to move closer during Targeting mode
+                    // Tells Rio to move closer during Targeting modes
 
                 }
 
