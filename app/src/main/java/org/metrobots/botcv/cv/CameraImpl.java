@@ -13,19 +13,18 @@ import java.util.ArrayList;
  * Interface class for the camera
  * Created by Tasgo on 1/16/16.
  */
-public class CameraInterface implements CvCameraViewListener {
+public class CameraImpl implements CvCameraViewListener {
         //Initializing variables for future use
     private Mat frame = new Mat();
     private Mat hsv = new Mat();
     private Mat hierarchy = new Mat();
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
-    public LimiterSlider limiterSlider;
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
+    private int status = 2;
 
 
-    public CameraInterface(LimiterSlider limiterSlider){
-        this.limiterSlider = limiterSlider;
+    public CameraImpl(){
     }
 
     @Override
@@ -96,14 +95,17 @@ public class CameraInterface implements CvCameraViewListener {
                 double width = (bottomright.x - topleft.x);
                 if (width < 90){
                     //Tells Rio to move further away during Targeting modes
+                    status = 1;
                     System.out.println("Width is less than 90");
                 }
                 else if (width > 110){
                     // Tells Rio to move robot closer during Targeting modes
+                    status = -1;
                     System.out.println("Width is greater than 110");
                 }
                 else{
                     //Tell Rio not to move robot during Targeting modes
+                    status = 0;
                     System.out.println("Don't move Mr. Robot");
                 }
                     //Finding the middle of the countoured area on the screen
@@ -115,7 +117,7 @@ public class CameraInterface implements CvCameraViewListener {
                 Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0), 10, Imgproc.LINE_8, 0);
             }
             catch(Exception e) {
-                //In case no contours are found
+                status = 2;
             }
         }
         catch (Exception e) {
@@ -125,4 +127,7 @@ public class CameraInterface implements CvCameraViewListener {
         return mat;
     }
 
+    public int getStatus() {
+        return status;
+    }
 }

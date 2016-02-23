@@ -24,4 +24,9 @@ public class CommImpl implements CommInterface {
     public float[] getAccelerometer() {
         return activity.getPeripheralManager().getAccelerometerData();
     }
+
+    @Override
+    public int getFiringStatus() {
+        return activity.getCameraImpl().getStatus();
+    }
 }

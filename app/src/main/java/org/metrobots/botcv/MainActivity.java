@@ -3,17 +3,12 @@ package org.metrobots.botcv;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.SeekBar;
 import android.widget.Toast;
-import android.hardware.*;
-import java.lang.Math;
 
 import org.metrobots.botcv.communication.CommImpl;
-import org.metrobots.botcv.communication.CommInterface;
 import org.metrobots.botcv.communication.CommServer;
 import org.metrobots.botcv.cv.BotCameraView;
-import org.metrobots.botcv.cv.CameraInterface;
+import org.metrobots.botcv.cv.CameraImpl;
 import org.metrobots.botcv.cv.LimiterSlider;
 import org.metrobots.botcv.peripheral.PeripheralManager;
 
@@ -21,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
     private BotCameraView cameraView;
     private LimiterSlider limiterSlider = new LimiterSlider();
-    private CameraInterface cameraInterface = new CameraInterface(limiterSlider);
+    private CameraImpl cameraImpl = new CameraImpl();
     private PeripheralManager peripheralManager;
 
     static {
@@ -37,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         cameraView = (BotCameraView) findViewById(R.id.cameraView);
         cameraView.setVisibility(SurfaceView.VISIBLE);
-        cameraView.setCvCameraViewListener(cameraInterface);
+        cameraView.setCvCameraViewListener(cameraImpl);
         cameraView.enableView();
 
         try {
@@ -53,5 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
     public PeripheralManager getPeripheralManager() {
         return peripheralManager;
+    }
+
+    public CameraImpl getCameraImpl() {
+        return cameraImpl;
     }
 }
