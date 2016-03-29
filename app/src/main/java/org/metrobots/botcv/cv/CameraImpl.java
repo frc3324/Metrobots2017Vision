@@ -78,55 +78,17 @@ public class CameraImpl implements CvCameraViewListener{
             oldMillis = System.currentTimeMillis();
             thresholSet = 0;
         }
-    /*
-        if (thresholSet == 0){
-            Core.inRange(hsv, new Scalar(48, 152, 122), new Scalar(70, 255, 255), frame);
-        }
-        else if (thresholSet == 1){
-            Core.inRange(hsv, new Scalar(20, 100, 150), new Scalar(40, 200, 255), frame);
-        }
-        else if (thresholSet == 2){
-            Core.inRange(hsv, new Scalar(55, 125, 150), new Scalar(70, 200, 200), frame);
-        }
-        else if (thresholSet == 3){
-            Core.inRange(hsv, new Scalar(45, 100, 100), new Scalar(70, 200, 255), frame);
-        }
-        else if (thresholSet == 4){
-            Core.inRange(hsv, new Scalar(60, 125, 122), new Scalar(80, 175, 255), frame);
-        }
-        else if (thresholSet == 5){
-            Core.inRange(hsv, new Scalar(48, 50, 122), new Scalar(70, 150, 255), frame);
-        }*/
-
-        /*if (thresholSet == 0){
-            Core.inRange(hsv, new Scalar(30, 100, 100), new Scalar(70, 200, 255), frame);
-        }
-        else if (thresholSet == 1){
-            Core.inRange(hsv, new Scalar(45, 60, 100), new Scalar(70, 150, 255), frame);
-        }
-        else if (thresholSet == 2){
-            Core.inRange(hsv, new Scalar(45, 100, 100), new Scalar(70, 200, 255), frame);
-        }
-        else if (thresholSet == 3){
-            Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 200, 255), frame);
-        }
-        else if (thresholSet == 4){
-            Core.inRange(hsv, new Scalar(45, 100, 100), new Scalar(70, 200, 255), frame);
-        }
-        else if (thresholSet == 5) {
-            Core.inRange(hsv, new Scalar(45, 100, 100), new Scalar(70, 200, 255), frame);
-        }*/
         //Blurs the black and white image to eliminate all noise
         //Imgproc.bilateralFilter(hsv, hsv, 5, 200, 200);
         hsv.copyTo(hsv2);
-        Imgproc.bilateralFilter(hsv, hsv2, 5, 10, 10);
-        Imgproc.medianBlur(hsv, hsv, 5);
-        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(7, 7));
+        Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
+        Imgproc.medianBlur(hsv, hsv, 3);
+        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
         Imgproc.erode(hsv, hsv, element);
         Imgproc.dilate(hsv, hsv, element);
         Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
 
-            System.out.println(thresholSet);
+        //System.out.println(thresholSet);
         //Core.inRange(hsv, new Scalar(48, 152, 122), new Scalar(70, 255, 255), frame);
         //Core.inRange(hsv, new Scalar(46, 112, 100), new Scalar(70, 255, 255), frame);
             //Bilatersl FIltering
@@ -137,7 +99,8 @@ public class CameraImpl implements CvCameraViewListener{
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
             //Draws the contours found on the original camera feed
         Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
-
+            //Draws circle at the center of the feed
+        Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2), 5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
         try {
                 //Creates the max variable
             int max = 0;
@@ -181,9 +144,11 @@ public class CameraImpl implements CvCameraViewListener{
                 center.x = (topleft.x+bottomright.x)/2;
                 center.y = (topleft.y+bottomright.y)/2;
                     //Draws the circle at center of contoured object
-                Imgproc.circle(mat, center, 25, new Scalar(255,0,255), 10, Imgproc.LINE_8, 0);
+                Imgproc.circle(mat, center, 5, new Scalar(255, 0, 255), 5, Imgproc.LINE_8, 0);
                     //Draws rectangle around the recognized contour
-                Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255,0,0), 10, Imgproc.LINE_8, 0);
+                Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
+                System.out.println("X Away: " + Math.abs((mat.size().width / 2) - center.x));
+                System.out.println("Y Away: " + Math.abs((mat.size().height / 2) - center.y));
             }
             catch(Exception e) {
                     //This is
