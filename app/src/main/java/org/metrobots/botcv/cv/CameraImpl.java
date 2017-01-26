@@ -98,9 +98,11 @@ public class CameraImpl implements CvCameraViewListener{
             //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
             //Draws the contours found on the original camera feed
-        Imgproc.drawContours(mat, contours, -2, new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        Imgproc.drawContours(mat, contours, -2,
+                new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
             //Draws circle at the center of the feed
-        Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2), 5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
+        Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
+                5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
         try {
                 //Creates the max variable
             int max = 0;
@@ -144,9 +146,11 @@ public class CameraImpl implements CvCameraViewListener{
                 center.x = (topleft.x+bottomright.x)/2;
                 center.y = (topleft.y+bottomright.y)/2;
                     //Draws the circle at center of contoured object
-                Imgproc.circle(mat, center, 5, new Scalar(255, 0, 255), 5, Imgproc.LINE_8, 0);
+                Imgproc.circle(mat, center, 5, new Scalar(255, 0, 255),
+                        5, Imgproc.LINE_8, 0);
                     //Draws rectangle around the recognized contour
-                Imgproc.rectangle(mat, place.tl(), place.br(), new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
+                Imgproc.rectangle(mat, place.tl(), place.br(),
+                        new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
                 System.out.println("X Away: " + Math.abs((mat.size().width / 2) - center.x));
                 System.out.println("Y Away: " + Math.abs((mat.size().height / 2) - center.y));
             }
