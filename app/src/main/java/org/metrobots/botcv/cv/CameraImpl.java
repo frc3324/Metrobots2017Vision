@@ -63,14 +63,10 @@ public class CameraImpl implements CvCameraViewListener{
     public Mat cameraFrame(Mat mat) {
             //Empty's frames and lists to ensure the app does not crash and reduces lag
         frame.empty(); hsv.empty(); hsv2.empty(); hierarchy.empty(); contours.clear();
+
             //Converts the RGB frame to the HSV frame
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
-            // Blur image
-        //Imgproc.medianBlur(frame, frame, 9);
-            //Color ranges for in the Workshop
-        //Core.inRange(hsv, new Scalar(55, 40, 125), new Scalar(70, 255, 255), frame);
-        //Core.inRange(hsv, new Scalar(45, 100, 100), new Scalar(70, 200, 200), frame);
-            //Color ranges for in the PAST Foundation
+
         if (Math.abs(System.currentTimeMillis()-oldMillis) > 1000 && thresholSet < 5) {
             oldMillis = System.currentTimeMillis();
             thresholSet++;
@@ -78,35 +74,39 @@ public class CameraImpl implements CvCameraViewListener{
             oldMillis = System.currentTimeMillis();
             thresholSet = 0;
         }
-        //Blurs the black and white image to eliminate all noise
-        //Imgproc.bilateralFilter(hsv, hsv, 5, 200, 200);
+            //creates a copy so the original is unaffected
         hsv.copyTo(hsv2);
+
+            //tries to remove random splotches of contours
         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
-        Imgproc.medianBlur(hsv, hsv, 3);
+        Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
+
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+
+            //further tries to remove contours
         Imgproc.erode(hsv, hsv, element);
         Imgproc.dilate(hsv, hsv, element);
+
+            //filters out colors outside of the set range of hsv
         Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
 
-        //System.out.println(thresholSet);
-        //Core.inRange(hsv, new Scalar(48, 152, 122), new Scalar(70, 255, 255), frame);
-        //Core.inRange(hsv, new Scalar(46, 112, 100), new Scalar(70, 255, 255), frame);
-            //Bilatersl FIltering
-        //mat.copyTo(biMat);
             //Copies the black and white image to a new frame to prevent messing up the original
         frame.copyTo(contourFrame);
+
             //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
             //Draws the contours found on the original camera feed
         Imgproc.drawContours(mat, contours, -2,
                 new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+
             //Draws circle at the center of the feed
         Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
                 5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
         try {
                 //Creates the max variable
             int max = 0;
-                //Sets up loop to go through all contuors
+                //Sets up loop to go through all contours
             for (int a=0;a<contours.size();a++){
                         //Gets the area of all of the contours
                     double s2 = Imgproc.contourArea(contours.get(a));
