@@ -32,6 +32,10 @@ public class CameraImpl implements CvCameraViewListener{
     private long oldMillis = 0;
     private int thresholSet = 0;
 
+
+    //temp code
+    private LimiterSlider limiterSlider;
+
     public CameraImpl() {
     }
 
@@ -80,15 +84,19 @@ public class CameraImpl implements CvCameraViewListener{
             //tries to remove random splotches of contours
         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
         Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
+        Imgproc.GaussianBlur(hsv, hsv, new Size(3,3), 1);
 
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
             //further tries to remove contours
-        Imgproc.erode(hsv, hsv, element);
-        Imgproc.dilate(hsv, hsv, element);
+        //Imgproc.erode(hsv, hsv, element);
+        //Imgproc.dilate(hsv, hsv, element);
 
             //filters out colors outside of the set range of hsv
-        Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
+        //Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(45, 110, 150), new Scalar(70, 255, 255), frame);
+
+        //Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
 
             //Copies the black and white image to a new frame to prevent messing up the original
         frame.copyTo(contourFrame);
@@ -103,9 +111,20 @@ public class CameraImpl implements CvCameraViewListener{
             //Draws circle at the center of the feed
         Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
                 5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
+        /*
+        System.out.println("Middle of the Screen");
+        int screenWidth = (int)(mat.size().width / 2);
+        int screenHeight = (int)(mat.size().height / 2);
+
+
+        String thingYouWant = mat.get(screenWidth, screenHeight).toString();
+
+        System.out.print(thingYouWant);
+        */
         try {
                 //Creates the max variable
             int max = 0;
+            int max2 = 0;
                 //Sets up loop to go through all contours
             for (int a=0;a<contours.size();a++){
                         //Gets the area of all of the contours
@@ -114,20 +133,26 @@ public class CameraImpl implements CvCameraViewListener{
                     if (s2 > Imgproc.contourArea(contours.get(max))) {
                             //Sets largest contour equal to max variable
                         max = a;
+                    } else if (s2 > Imgproc.contourArea(contours.get(max2))) {
+                        max2 = a;
                     }
             }
 
             try{
                     //Gets the minimum area vertical(non titlted) rectangle that outlines the contour
                 Rect place = Imgproc.boundingRect(contours.get(max));
+                Rect place2 = Imgproc.boundingRect(contours.get(max2));
                     //Creates variable for center point
                 Point center = new Point();
+                Point center2 = new Point();
                     //Sets variale fpr screen center so now we adjust the X and Y axis
-                Point screenCenter = new Point();
+                //Point screenCenter = new Point();
                     //Creates top left point variable
                 Point topleft = place.tl();
+                Point topleft2 = place2.tl();
                     //Cerates bottom right point variable
                 Point bottomright = place.br();
+                Point bottomright2 = place2.br();
                     //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
                 if (width < 90){
@@ -145,11 +170,16 @@ public class CameraImpl implements CvCameraViewListener{
                     //Finding the middle of the countoured area on the screen
                 center.x = (topleft.x+bottomright.x)/2;
                 center.y = (topleft.y+bottomright.y)/2;
+
+                center2.x = (topleft2.x+bottomright2.x)/2;
+                center2.y = (topleft2.y+bottomright2.y)/2;
                     //Draws the circle at center of contoured object
                 Imgproc.circle(mat, center, 5, new Scalar(255, 0, 255),
                         5, Imgproc.LINE_8, 0);
                     //Draws rectangle around the recognized contour
                 Imgproc.rectangle(mat, place.tl(), place.br(),
+                        new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
+                Imgproc.rectangle(mat, place2.tl(), place2.br(),
                         new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
                 System.out.println("X Away: " + Math.abs((mat.size().width / 2) - center.x));
                 System.out.println("Y Away: " + Math.abs((mat.size().height / 2) - center.y));

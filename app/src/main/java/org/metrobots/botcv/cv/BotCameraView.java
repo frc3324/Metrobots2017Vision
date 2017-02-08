@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -69,6 +70,12 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                 Log.d(TAG, "Trying to open camera with old open()");
                 try {
                     mCamera = Camera.open();
+                    Camera.Parameters params = mCamera.getParameters();
+                    if (params.isAutoExposureLockSupported()) {
+                        params.setExposureCompensation(0);
+                        params.setAutoExposureLock(true);
+                    }
+
                     orientCamera();
                 }
                 catch (Exception e){
