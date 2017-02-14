@@ -83,18 +83,19 @@ public class CameraImpl implements CvCameraViewListener{
 
             //tries to remove random splotches of contours
         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
-        Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
-        Imgproc.GaussianBlur(hsv, hsv, new Size(3,3), 1);
+        //Imgproc.medianBlur(hsv, hsv, 3); //changed from 3 to 5
+        //Imgproc.GaussianBlur(hsv, hsv, new Size(3,3), 1);
 
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
             //further tries to remove contours
-        //Imgproc.erode(hsv, hsv, element);
-        //Imgproc.dilate(hsv, hsv, element);
+        Imgproc.erode(hsv, hsv, element);
+        Imgproc.dilate(hsv, hsv, element);
 
             //filters out colors outside of the set range of hsv
         //Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(45, 110, 150), new Scalar(70, 255, 255), frame);
+        //Core.inRange(hsv, new Scalar(45 , 110, 150), new Scalar(70, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(45, 120, 150), new Scalar(70, 255, 255), frame);//88.5
 
         //Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
 
@@ -103,7 +104,6 @@ public class CameraImpl implements CvCameraViewListener{
 
             //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-
             //Draws the contours found on the original camera feed
         Imgproc.drawContours(mat, contours, -2,
                 new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
@@ -111,16 +111,6 @@ public class CameraImpl implements CvCameraViewListener{
             //Draws circle at the center of the feed
         Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
                 5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
-        /*
-        System.out.println("Middle of the Screen");
-        int screenWidth = (int)(mat.size().width / 2);
-        int screenHeight = (int)(mat.size().height / 2);
-
-
-        String thingYouWant = mat.get(screenWidth, screenHeight).toString();
-
-        System.out.print(thingYouWant);
-        */
         try {
                 //Creates the max variable
             int max = 0;
@@ -155,19 +145,21 @@ public class CameraImpl implements CvCameraViewListener{
                 Point bottomright2 = place2.br();
                     //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
-                if (width < 90){
-                    //Tells Rio to move further away during Targeting modes
-                    status = 1;
+                if (width >= 30) {
+                    if (width < 90) {
+                        //Tells Rio to move closer during Targeting modes
+                        status = 1;
+                    } else if (width > 310) {
+                        // Tells Rio to move further away during Targeting modes
+                        status = -1;
+                    } else {
+                        //Tell Rio not to move robot during Targeting modes
+                        status = 0;
+                    }
+                } else {
+                    status = 2;
                 }
-                else if (width > 110){
-                    // Tells Rio to move robot closer during Targeting modes
-                    status = -1;
-                }
-                else{
-                    //Tell Rio not to move robot during Targeting modes
-                    status = 0;
-                }
-                    //Finding the middle of the countoured area on the screen
+                        //Finding the middle of the countoured area on the screen
                 center.x = (topleft.x+bottomright.x)/2;
                 center.y = (topleft.y+bottomright.y)/2;
 
@@ -181,8 +173,9 @@ public class CameraImpl implements CvCameraViewListener{
                         new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
                 Imgproc.rectangle(mat, place2.tl(), place2.br(),
                         new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
-                System.out.println("X Away: " + Math.abs((mat.size().width / 2) - center.x));
-                System.out.println("Y Away: " + Math.abs((mat.size().height / 2) - center.y));
+                //System.out.println("X Away: " + Math.abs((mat.size().width / 2) - center.x));
+                //System.out.println("Y Away: " + Math.abs((mat.size().height / 2) - center.y));
+                System.out.println("Vision Status: " + status);
             }
             catch(Exception e) {
                     //This is
