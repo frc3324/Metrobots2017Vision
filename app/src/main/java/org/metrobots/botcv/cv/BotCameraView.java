@@ -73,7 +73,7 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                     Camera.Parameters params = mCamera.getParameters();
                     if (params.isAutoExposureLockSupported()) {
                         params.setExposureCompensation(0);
-                        params.setAutoExposureLock(true);
+                        params.setAutoExposureLock(true); //was true
                     }
 
                     orientCamera();

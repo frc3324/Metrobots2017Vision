@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -31,6 +32,9 @@ public class CameraImpl implements CvCameraViewListener{
     private Mat hsv2 = new Mat();
     private long oldMillis = 0;
     private int thresholSet = 0;
+    private static final String MEASURE = "Rectangle measurement";
+    private String measureInfoWidth = "Width";
+    private String measureInfoHeight = "Height";
 
 
     //temp code
@@ -83,8 +87,8 @@ public class CameraImpl implements CvCameraViewListener{
 
             //tries to remove random splotches of contours
         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
-        //Imgproc.medianBlur(hsv, hsv, 3); //changed from 3 to 5
-        //Imgproc.GaussianBlur(hsv, hsv, new Size(3,3), 1);
+        Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
+        //Imgproc.GaussianBlur(hsv, hsv, new Size(5,5), 2);
 
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
@@ -92,10 +96,26 @@ public class CameraImpl implements CvCameraViewListener{
         Imgproc.erode(hsv, hsv, element);
         Imgproc.dilate(hsv, hsv, element);
 
+
             //filters out colors outside of the set range of hsv
         //Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
         //Core.inRange(hsv, new Scalar(45 , 110, 150), new Scalar(70, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(45, 120, 150), new Scalar(70, 255, 255), frame);//88.5
+        //Core.inRange(hsv, new Scalar(40, 90, 150), new Scalar(75, 255, 255), frame); //88.5
+        //Core.inRange(hsv, new Scalar(0, 0, 240), new Scalar(0, 0, 255), frame); //this is the color white; only seems to work on field
+        //Core.inRange(hsv, new Scalar(40, 90, 150), new Scalar(75, 255, 255), frame);
+
+        int hueLow = (80*255)/360; //80 is the value from colorizer.org
+        int hueHigh = (135*255)/360;
+
+        int satLow = (50*255)/100;
+        int satHigh = (100*255)/100;
+
+        int valLow = (50*255)/100;
+        int valHigh = (100*255)/100;
+        //these lines convert the values from colorizer.org to the scale in the code
+
+        //Core.inRange(hsv, new Scalar(0, 225, 250), new Scalar(100, 245, 255), frame);
+        Core.inRange(hsv, new Scalar(hueLow, satLow, valLow), new Scalar(hueHigh, satHigh, valHigh), frame);
 
         //Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
 
@@ -140,11 +160,20 @@ public class CameraImpl implements CvCameraViewListener{
                     //Creates top left point variable
                 Point topleft = place.tl();
                 Point topleft2 = place2.tl();
-                    //Cerates bottom right point variable
+                    //Creates bottom right point variable
                 Point bottomright = place.br();
                 Point bottomright2 = place2.br();
                     //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
+                double height = (bottomright.y - topleft.y);
+                System.out.println(width);
+                System.out.println(height);
+                measureInfoWidth = " Width " + width;
+                measureInfoHeight = " Height " + height;
+                Log.i(MEASURE, measureInfoWidth);
+                Log.i(MEASURE, measureInfoHeight);
+
+
                 if (width >= 30) {
                     if (width < 90) {
                         //Tells Rio to move closer during Targeting modes
