@@ -122,6 +122,8 @@ public class CameraImpl implements CvCameraViewListener{
             //Copies the black and white image to a new frame to prevent messing up the original
         frame.copyTo(contourFrame);
 
+
+
             //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
             //Draws the contours found on the original camera feed
@@ -215,7 +217,7 @@ public class CameraImpl implements CvCameraViewListener{
             //In case no contours are found
         }
             //Returns the original image with drawn contours and shape identifiers
-        return mat;
+        return mat; // Used: contourFrame
     }
 
     public int getStatus() {return status;}
