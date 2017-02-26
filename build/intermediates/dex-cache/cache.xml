@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.0/support-annotations-23.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="92e3fc113ec3ee36b64603a38857b95700025633">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.1.0_6f8e3c42b488451f64578312ee795117fdfb4d2f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="57ae0d750ff83f0c738d21720224ac7ea866a094">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.1.0_cc9786f5b54ef9bd14f547c50bdc799ad3001e9a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3bafa6c53927b135d35ef24296f2be4ede31c02b">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6fc9a77913f845d45a19335f6094f0f30fabc67c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/libs/internal_impl-23.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8716243bf04bae8d6c9ca94d27b9a9be7236f0a3">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.1.0_a38a0ee58341d1d47bbcb43c69ade36331f3a815/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/.gradle/caches/modules-2/files-2.1/com.tascape.qa/lipermi/1.0.1/3034be1f27ae943bef2f8f99115fb20d0e761fda/lipermi-1.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3034be1f27ae943bef2f8f99115fb20d0e761fda">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/lipermi-1.0.1_613612f4d1f786da96c917d082cc93ebe4a346d1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="4f7aaee57dc9a53cbc4c271caae8a66650764db8">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_593e85e7754f830c8843ba01aec023de6b2a091e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
+        <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.1.0_1d7c6150f2f8985578f0c469f60776c47257c95f/classes.dex" />
+    </item>
+
+</items>
