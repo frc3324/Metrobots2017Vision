@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
-        sha1="3bafa6c53927b135d35ef24296f2be4ede31c02b">
+        sha1="068b4703f9d1aeb997de92b97a5774cf8db3be54">
         <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6fc9a77913f845d45a19335f6094f0f30fabc67c/classes.dex" />
     </item>
     <item
@@ -52,7 +52,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
-        sha1="4f7aaee57dc9a53cbc4c271caae8a66650764db8">
+        sha1="9f21471a474dd5ecaebadbb895a483f3a2b142f8">
         <dex dex="/Users/tiger/metrobots/Metrobots2017Vision/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_593e85e7754f830c8843ba01aec023de6b2a091e/classes.dex" />
     </item>
     <item
