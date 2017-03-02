@@ -144,28 +144,9 @@ public class CameraImpl implements CvCameraViewListener {
 
 
         //filters out colors outside of the set range of hsv
-        Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
-        //filters out colors outside of the set range of hsv
         //Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
-        //Core.inRange(hsv, new Scalar(45 , 110, 150), new Scalar(70, 255, 255), frame);
-        //Core.inRange(hsv, new Scalar(40, 90, 150), new Scalar(75, 255, 255), frame); //88.5
-        //Core.inRange(hsv, new Scalar(0, 0, 240), new Scalar(0, 0, 255), frame); //this is the color white; only seems to work on field
-        //Core.inRange(hsv, new Scalar(40, 90, 150), new Scalar(75, 255, 255), frame);
+        Core.inRange(hsv, new Scalar(0,0,175), new Scalar(255,100,255), frame);
 
-        int hueLow = (80 * 255) / 360; //80 is the value from colorizer.org
-        int hueHigh = (135 * 255) / 360;
-
-        int satLow = (50 * 255) / 100;
-        int satHigh = (100 * 255) / 100;
-
-        int valLow = (50 * 255) / 100;
-        int valHigh = (100 * 255) / 100;
-        //these lines convert the values from colorizer.org to the scale in the code
-
-        //Core.inRange(hsv, new Scalar(0, 225, 250), new Scalar(100, 245, 255), frame);
-        //Core.inRange(hsv, new Scalar(hueLow, satLow, valLow), new Scalar(hueHigh, satHigh, valHigh), frame);
-
-        //Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
 
         //Copies the black and white image to a new frame to prevent messing up the original
         frame.copyTo(contourFrame);
@@ -219,116 +200,30 @@ public class CameraImpl implements CvCameraViewListener {
                 //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
                 double height = (bottomright.y - topleft.y);
-                /*System.out.println(width);
-        Core.inRange(hsv, new Scalar(hueLow, satLow, valLow), new Scalar(hueHigh, satHigh, valHigh), frame);
 
-        //Core.inRange(hsv, limiterSlider.getMin(), limiterSlider.getMax(), frame);
+                center.x = topleft.x + width/2;
+                center.y = topleft.y + height/2;
 
-            //Copies the black and white image to a new frame to prevent messing up the original
-        frame.copyTo(contourFrame);
-
-
-
-            //Finds the contours in the thresholded frame
-        Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-            //Draws the contours found on the original camera feed
-        Imgproc.drawContours(mat, contours, -2,
-                new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
-
-            //Draws circle at the center of the feed
-        Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
-                5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
-        try {
-                //Creates the max variable
-            int max = 0;
-            int max2 = 0;
-                //Sets up loop to go through all contours
-            for (int a=0;a<contours.size();a++){
-                        //Gets the area of all of the contours
-                    double s2 = Imgproc.contourArea(contours.get(a));
-                        //Checks the area against the other areas of the contours to find out which is largest
-                    if (s2 > Imgproc.contourArea(contours.get(max))) {
-                            //Sets largest contour equal to max variable
-                        max = a;
-                    } else if (s2 > Imgproc.contourArea(contours.get(max2))) {
-                        max2 = a;
-                    }
-            }
-
-            try{
-                    //Gets the minimum area vertical(non titlted) rectangle that outlines the contour
-                Rect place = Imgproc.boundingRect(contours.get(max));
-                Rect place2 = Imgproc.boundingRect(contours.get(max2));
-                    //Creates variable for center point
-                Point center = new Point();
-                Point center2 = new Point();
-                    //Sets variale fpr screen center so now we adjust the X and Y axis
-                //Point screenCenter = new Point();
-                    //Creates top left point variable
-                Point topleft = place.tl();
-                Point topleft2 = place2.tl();
-                    //Creates bottom right point variable
-                Point bottomright = place.br();
-                Point bottomright2 = place2.br();
-                    //Finds the width of rectangle
-                double width = (bottomright.x - topleft.x);
-                double height = (bottomright.y - topleft.y);
-                System.out.println(width);
->>>>>>> 87e00817cdbdf16ebed16e467871bee84a1e7970
-                System.out.println(height);
-                measureInfoWidth = " Width " + width;
-                measureInfoHeight = " Height " + height;
-                Log.i(MEASURE, measureInfoWidth);
-                Log.i(MEASURE, measureInfoHeight);
-<<<<<<< HEAD
-                */
-
-                center.x = width;
-                center.y = height;
-
-                /*
-                if (width >= 30) {
-                    if (width < 90) {
-                        //Tells Rio to move closer during Targeting modes
-                        direction = 1;
-                    } else if (width > 310) {
-                        // Tells Rio to move further away during Targeting modes
-                        direction = -1;
-                    } else {
-                        //Tell Rio not to move robot during Targeting modes
-                        direction = 0;
-                    }
-                } else {
-                    direction = 2;
-                }
-                */
 
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
-                //System.out.println("Difference in x " + relativeDeltaX);
-                //System.out.println("Difference in y " + relativeDeltaY);
+                String prWidth = "Message: "  + bottomright.x + ":" + topleft.x + ": " + relativeDeltaX;
+                Log.i(DIRECTION, prWidth);
+
 
                 //Direction is the course of the robot (robot orientated)
-                if ((Math.abs(relativeDeltaX)) >= 50) { //5 = arbutrary number //was Math.abs((mat.size().width / 2) - center.x
-                    if (relativeDeltaX < -50) { //was (mat.size().width / 2) - center.x)
-                        //Tells the rio to move the robot left
-                        direction = -1;
-                    } else if (relativeDeltaX > 50) { //was (mat.size().width / 2) - center.x)
+                //if ((Math.abs(relativeDeltaX)) >= 50) { //5 = arbutrary number //was Math.abs((mat.size().width / 2) - center.x
+                if (relativeDeltaX < -50) { //was (mat.size().width / 2) - center.x)
+                    //Tells the rio to move the robot left
+                    direction = -1;
+                } else if (relativeDeltaX > 50) { //was (mat.size().width / 2) - center.x)
                         //Tells the rio to move the robot right
                         direction = 1;
-                    }
-                }
-                if ((Math.abs(relativeDeltaX)) < 5) {
+                } else {//((Math.abs(relativeDeltaX)) < 50 ) {
                     //Tells the rio that the robot is within the margin of error
                     direction = 0;
                 }
 
-                /*if(max > 100000000) {
-                    status = 1;
-                }
-                else{
-                    status = 2;
-                }*/
 
                 seeDirection = "The direction " + direction;
                 Log.i(DIRECTION, seeDirection);
@@ -355,8 +250,8 @@ public class CameraImpl implements CvCameraViewListener {
                 }
 
                 seeMagnitude = "The magnitude " + magnitude;
-                Log.i(MAGNITUDE, seeMagnitude);
-                System.out.println(magnitude);
+                //Log.i(MAGNITUDE, seeMagnitude);
+                //System.out.println(magnitude);
 
                 //Finding the middle of the countoured area on the screen
                 center.x = (topleft.x + bottomright.x) / 2;
