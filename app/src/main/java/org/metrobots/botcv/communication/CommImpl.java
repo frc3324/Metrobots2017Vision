@@ -29,4 +29,16 @@ public class CommImpl implements CommInterface {
     public int getFiringStatus() {
         return activity.getCameraImpl().getStatus();
     }
-}
+
+    @Override
+    public int getMagnitude() {
+        return activity.getCameraImpl().getMagnitude();
+    }
+
+    @Override
+    public int getDirection() {
+        return activity.getCameraImpl().getDirection();
+    }
+
+    }
+
