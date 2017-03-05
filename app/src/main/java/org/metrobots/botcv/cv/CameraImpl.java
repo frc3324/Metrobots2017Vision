@@ -130,7 +130,7 @@ public class CameraImpl implements CvCameraViewListener {
 
         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
         Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
-        //Imgproc.GaussianBlur(hsv, hsv, new Size(5,5), 2);
+        Imgproc.GaussianBlur(hsv, hsv, new Size(5,5), 2);
 
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
@@ -141,6 +141,8 @@ public class CameraImpl implements CvCameraViewListener {
 
         Imgproc.erode(hsv, hsv, element);
         Imgproc.dilate(hsv, hsv, element);
+        Imgproc.dilate(hsv, hsv, element);
+        Imgproc.erode(hsv, hsv, element);
 
 
         //filters out colors outside of the set range of hsv
@@ -164,7 +166,6 @@ public class CameraImpl implements CvCameraViewListener {
         try {
             //Creates the max variable
             int max = 0;
-            int max2 = 0;
             //Sets up loop to go through all contours
             for (int a = 0; a < contours.size(); a++) {
                 //Gets the area of all of the contours
@@ -173,8 +174,6 @@ public class CameraImpl implements CvCameraViewListener {
                 if (s2 > Imgproc.contourArea(contours.get(max))) {
                     //Sets largest contour equal to max variable
                     max = a;
-                } else if (s2 > Imgproc.contourArea(contours.get(max2))) {
-                    max2 = a;
                 }
             }
 
@@ -182,21 +181,21 @@ public class CameraImpl implements CvCameraViewListener {
                 //System.out.println(Imgproc.contourArea(contours.get(max)));
                 //Gets the minimum area vertical(non titlted) rectangle that outlines the contour
                 Rect place = Imgproc.boundingRect(contours.get(max));
-                Rect place2 = Imgproc.boundingRect(contours.get(max2));
+
 
                 //System.out.println("Top Left Coordinate: " + place.tl());
 
                 //Creates variable for center point
                 Point center = new Point();
-                Point center2 = new Point();
+
                 //Sets variale fpr screen center so now we adjust the X and Y axis
                 //Point screenCenter = new Point();
                 //Creates top left point variable
                 Point topleft = place.tl();
-                Point topleft2 = place2.tl();
+
                 //Creates bottom right point variable
                 Point bottomright = place.br();
-                Point bottomright2 = place2.br();
+
                 //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
                 double height = (bottomright.y - topleft.y);
@@ -207,16 +206,14 @@ public class CameraImpl implements CvCameraViewListener {
 
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
-                String prWidth = "Message: "  + bottomright.x + ":" + topleft.x + ": " + relativeDeltaX;
-                Log.i(DIRECTION, prWidth);
-
+                
 
                 //Direction is the course of the robot (robot orientated)
                 //if ((Math.abs(relativeDeltaX)) >= 50) { //5 = arbutrary number //was Math.abs((mat.size().width / 2) - center.x
-                if (relativeDeltaX < -50) { //was (mat.size().width / 2) - center.x)
+                if (relativeDeltaY < -50) { //was (mat.size().width / 2) - center.x)
                     //Tells the rio to move the robot left
                     direction = -1;
-                } else if (relativeDeltaX > 50) { //was (mat.size().width / 2) - center.x)
+                } else if (relativeDeltaY > 50) { //was (mat.size().width / 2) - center.x)
                         //Tells the rio to move the robot right
                         direction = 1;
                 } else {//((Math.abs(relativeDeltaX)) < 50 ) {
@@ -229,28 +226,28 @@ public class CameraImpl implements CvCameraViewListener {
                 Log.i(DIRECTION, seeDirection);
                 System.out.print(direction);
 
-                //Magnitude is the duration of the movement
-                if (relativeDeltaY >= 10) { //10 = arbitrary number //was Math.abs((mat.size().width / 2) - center.x
-                    if (relativeDeltaY <= 20) { //was (mat.size().width / 2) - center.x)
-                        //Tells the rio that the robot needs to move slow speed
-                        magnitude = 1;
-                        //System.out.println("Difference between y: " + relativeDeltaY);
-                        //Log.i();
-                    } else if (relativeDeltaX <= 30) { //was (mat.size().width / 2) - center.x)
-                        //Tells the rio to that the robot needs to move medium speed
-                        magnitude = 2;
-                    } else if (relativeDeltaY <= 40) {
-                        //Tells the rio to that the robot needs to move high speed
-                        magnitude = 3;
-                    } else {
-                        //Tells the rio that the robot doesn't need to move
-                        magnitude = 0;
-                    }
+                String widthSee = "Direction Thing: " + relativeDeltaX;
+                Log.i(DIRECTION, widthSee);
 
+                //Magnitude is the duration of the movement moving forward
+               //10 = arbitrary number //was Math.abs((mat.size().width / 2) - center.x
+                if (Math.abs(relativeDeltaX) >= 170) { //was (mat.size().width / 2) - center.x)
+                    //Tells the rio that the robot needs to move slow speed
+                    magnitude = 3;
+                } else if (Math.abs(relativeDeltaX) >= 100) { //was (mat.size().width / 2) - center.x)
+                    //Tells the rio to that the robot needs to move medium speed
+                    magnitude = 2;
+                } else if (Math.abs(relativeDeltaX) >= 30) {
+                    //Tells the rio to that the robot needs to move high speed
+                    magnitude = 1;
+                } else {
+                    magnitude = 0;
                 }
 
+
+
                 seeMagnitude = "The magnitude " + magnitude;
-                //Log.i(MAGNITUDE, seeMagnitude);
+                Log.i(MAGNITUDE, seeMagnitude);
                 //System.out.println(magnitude);
 
                 //Finding the middle of the countoured area on the screen
@@ -275,8 +272,6 @@ public class CameraImpl implements CvCameraViewListener {
                 center.x = (topleft.x + bottomright.x) / 2;
                 center.y = (topleft.y + bottomright.y) / 2;
 
-                center2.x = (topleft2.x + bottomright2.x) / 2;
-                center2.y = (topleft2.y + bottomright2.y) / 2;
 
 
                 //Draws the circle at center of contoured object
@@ -284,17 +279,10 @@ public class CameraImpl implements CvCameraViewListener {
                         5, Imgproc.LINE_8, 0);
                 //Draws rectangle around the recognized contour
                 //Draws the circle at center of contoured object
-                Imgproc.circle(mat, center, 5, new Scalar(255, 0, 255),
-                        5, Imgproc.LINE_8, 0);
+
                 //Draws rectangle around the recognized contour
                 Imgproc.rectangle(mat, place.tl(), place.br(),
                         new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
-                Imgproc.rectangle(mat, place2.tl(), place2.br(),
-                        new Scalar(255, 0, 0), 10, Imgproc.LINE_8, 0);
-                //System.out.println("X Away: " + Math.abs((mat.size().width / 2) - center.x));
-                //System.out.println("Y Away: " + Math.abs((mat.size().height / 2) - center.y));
-                //System.out.println("Vision Status: " + status);
-
 
             } catch (Exception e) {
                 //This is
@@ -323,21 +311,3 @@ public class CameraImpl implements CvCameraViewListener {
 
 }
 
-    //System.out.println("Vision Status: " + status);
-//}
-//            catch(Exception e) {
-//                    //This is
-//                //status = 2;
-//            }
-//        }
-//        catch (Exception e) {
-//            //In case no contours are found
-//        }
-//            //Returns the original image with drawn contours and shape identifiers
-//        return mat; // Used: contourFrame
-//    }
-//
-//    public int getStatus() {
-//        return status;
-//        }
-////}
