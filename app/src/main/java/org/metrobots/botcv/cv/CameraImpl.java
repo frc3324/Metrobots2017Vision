@@ -130,7 +130,7 @@ public class CameraImpl implements CvCameraViewListener {
 
         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
         Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
-        Imgproc.GaussianBlur(hsv, hsv, new Size(5,5), 2);
+        Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2);
 
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
@@ -145,9 +145,9 @@ public class CameraImpl implements CvCameraViewListener {
         Imgproc.erode(hsv, hsv, element);
 
 
-        //filters out colors outside of the set range of hsv
+        //filters out colors outside of the set range of hsv //*100/255
         //Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(0,0,175), new Scalar(255,100,255), frame);
+        Core.inRange(hsv, new Scalar(0, 0, 175), new Scalar(255, 100, 255), frame);
 
 
         //Copies the black and white image to a new frame to prevent messing up the original
@@ -162,6 +162,14 @@ public class CameraImpl implements CvCameraViewListener {
         //Draws circle at the center of the feed
         Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
                 5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
+
+        /*for (int i = 0; i < contours.size(); i++) {
+            RotatedRect rect = Imgproc.minAreaRect(new MatOfPoint2f(contours.get(i).toArray()));
+            if ((rect.size * rect.width - Imgproc.contourArea(contours.get(i))) < 1000) {
+            Imgproc.rectangle(mat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                    new Scalar(0, 255, 255), 10, Imgproc.LINE_8, 0);
+        }*/
+
 
         try {
             //Creates the max variable

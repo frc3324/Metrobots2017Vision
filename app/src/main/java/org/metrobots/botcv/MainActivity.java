@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+
     public void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
