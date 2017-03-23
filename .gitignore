@@ -36,7 +36,6 @@ gen-external-apklibs
 
 
 ### Java ###
-*.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -104,7 +103,6 @@ crashlytics-build.properties
 .idea/encodings.xml
 .idea/libraries/
 .idea/modules.xml
-.idea/workspace.xml
 openCVLibrary310/build/generated/assets/
 openCVLibrary310/build/generated/res/
 openCVLibrary310/build/generated/source/aidl/androidTest/

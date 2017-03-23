@@ -47,8 +47,8 @@ public class CameraImpl implements CvCameraViewListener {
 
     private static double relativeDeltaX = 0.0;
     private static double relativeDeltaY = 0.0;
-    private static final double PERFECT_X = 640; //temporary values
-    private static final double PERFECT_Y = 360;
+    private static final double PERFECT_X = 640; //temporary values //640
+    private static final double PERFECT_Y = 360; //360
 
     private static final String DIRECTION = "Direction";
     private String seeDirection = "The direction";
@@ -93,19 +93,10 @@ public class CameraImpl implements CvCameraViewListener {
         //Empty's frames and lists to ensure the app does not crash and reduces lag
         frame.empty();
         hsv.empty();
-        hsv2.empty();
+        //hsv2.empty();
         hierarchy.empty();
         contours.clear();
 
-        //Converts the RGB frame to the HSV frame
-
-        //Empty's frames and lists to ensure the app does not crash and reduces lag
-        frame.empty();
-        hsv.empty();
-        hsv2.empty();
-        hierarchy.empty();
-        contours.clear();
-        //commented out lines 103-107 as it was a copy of lines 94-98; didn't affect lag
         //Converts the RGB frame to the HSV frame
 
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
@@ -119,25 +110,20 @@ public class CameraImpl implements CvCameraViewListener {
         }
 
         //creates a copy so the original is unaffected
-        hsv.copyTo(hsv2);
+        //hsv.copyTo(hsv2);
 
         //tries to remove random splotches of contours
 
-        //creates a copy so the original is unaffected
-        hsv.copyTo(hsv2); //commented out this because it is a copy of line 122, but didn't change lag
-
-        //tries to remove random splotches of contours
-
-        Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
-        Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
+        //Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10); //(src, dst, d, sigmaColor, sigmaSpace)
+        //Imgproc.medianBlur(hsv, hsv, 3); //changed from 3 to 5 //test if higher the number, the more lag
         //Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2); //commenting out gaussianblur to reduce lag
 
-        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+        //Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
         //further tries to remove contours
 
-        Imgproc.erode(hsv, hsv, element);
-        Imgproc.dilate(hsv, hsv, element);
+        /*Imgproc.erode(hsv, hsv, element);
+        Imgproc.dilate(hsv, hsv, element);*/
 
 
         //filters out colors outside of the set range of hsv //*100/255
@@ -152,12 +138,12 @@ public class CameraImpl implements CvCameraViewListener {
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         //Draws the contours found on the original camera feed
-        Imgproc.drawContours(mat, contours, -2,
-                new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
+        //Imgproc.drawContours(mat, contours, -2,
+               // new Scalar(0, 0, 255), 5, 8, hierarchy, Imgproc.INTER_MAX, offset);
 
         //Draws circle at the center of the feed
-        Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
-                5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
+        //Imgproc.circle(mat, new Point((mat.size().width) / 2, (mat.size().height) / 2),
+          //      5, new Scalar(255, 255, 0), 15, Imgproc.LINE_8, 0);
 
         /*for (int i = 0; i < contours.size(); i++) {
             RotatedRect rect = Imgproc.minAreaRect(new MatOfPoint2f(contours.get(i).toArray()));
@@ -171,16 +157,20 @@ public class CameraImpl implements CvCameraViewListener {
             //Creates the max variable
             int max = 0;
             int max2 = 0;
+            double maxArea = 0;
+            double maxArea2 = 0;
             //Sets up loop to go through all contours
             for (int a = 0; a < contours.size(); a++) {
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
                 //Checks the area against the other areas of the contours to find out which is largest
-                if (s2 > Imgproc.contourArea(contours.get(max))) {
+                if (s2 > maxArea) {
                     //Sets largest contour equal to max variable
                     max = a;
-                } else if (s2 > Imgproc.contourArea(contours.get(max2))){
+                    maxArea = Imgproc.contourArea(contours.get(max));
+                } else if (s2 > maxArea2){
                     max2 = a;
+                    maxArea2 = Imgproc.contourArea(contours.get(max2));
                 }
             }
 
@@ -240,11 +230,11 @@ public class CameraImpl implements CvCameraViewListener {
 
 
                 seeDirection = "The direction " + direction;
-                Log.i(DIRECTION, seeDirection);
-                System.out.print(direction);
+                /*Log.i(DIRECTION, seeDirection);
+                System.out.print(direction);*/
 
-                String widthSee = "Direction Thing: " + relativeDeltaX;
-                Log.i(DIRECTION, widthSee);
+                //String widthSee = "Direction Thing: " + relativeDeltaX;
+                //Log.i(DIRECTION, widthSee);
 
                 //Magnitude is the duration of the movement moving forward
                //10 = arbitrary number //was Math.abs((mat.size().width / 2) - center.x
@@ -264,7 +254,7 @@ public class CameraImpl implements CvCameraViewListener {
 
 
                 seeMagnitude = "The magnitude " + magnitude;
-                Log.i(MAGNITUDE, seeMagnitude);
+                //Log.i(MAGNITUDE, seeMagnitude);
                 //System.out.println(magnitude);
 
                 //Finding the middle of the countoured area on the screen
@@ -306,7 +296,7 @@ public class CameraImpl implements CvCameraViewListener {
                 //This is
                 //status = 2;
             }
-            return mat; //frame
+            return mat; //return frame does binaryimage //was return mat
         } catch (Exception e) {
             //In case no contours are found, returns the error status
             status = 2;
