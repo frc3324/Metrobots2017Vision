@@ -72,20 +72,23 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                     mCamera = Camera.open();
                     Camera.Parameters params = mCamera.getParameters();
                     if (params.isAutoExposureLockSupported()) {
-                        params.setExposureCompensation(0);
+                        params.setExposureCompensation(-15); //the lower the number = darker it is
                         params.setAutoExposureLock(true); //was true
+                        params.set("iso", 100); //lower the number, more clear
                         //params.getWhiteBalance();
+                        params.setPreviewFpsRange(15, 30);
                         params.setAutoWhiteBalanceLock(true);
                         params.setWhiteBalance("warm-fluorescent"); //was 2800K  10000K
 
                         mCamera.setParameters(params);
                     }
-                    params = mCamera.getParameters();
-                    Log.i("Camera", "Exposure setting = " + params.get("exposure"));
+
+                    //params = mCamera.getParameters();
+                    /*Log.i("Camera", "Exposure setting = " + params.get("exposure"));
                     Log.i("Camera", "White Balance setting = " + params.get("whitebalance"));
                     Log.i("Camera", "Supported white balance = " + params.getSupportedWhiteBalance()); //prints out the available white balance options
                     Log.i("Camera", "Max exposure value = " + params.getMaxExposureCompensation());
-                    Log.i("Camera", "Min exposure value = " + params.getMinExposureCompensation());
+                    Log.i("Camera", "Min exposure value = " + params.getMinExposureCompensation());*/
                     //white balance options [auto, incandescent, fluorescent, warm-fluorescent, daylight, cloudy-daylight, twilight, shade]
                     //warm-fluorescent for home field
                     //change white balance based on field configuration
