@@ -83,11 +83,12 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                     params = mCamera.getParameters();
                     Log.i("Camera", "Exposure setting = " + params.get("exposure"));
                     Log.i("Camera", "White Balance setting = " + params.get("whitebalance"));
-                    Log.i("Camera", "Supported white balance = " + params.getSupportedWhiteBalance());
+                    Log.i("Camera", "Supported white balance = " + params.getSupportedWhiteBalance()); //prints out the available white balance options
                     Log.i("Camera", "Max exposure value = " + params.getMaxExposureCompensation());
                     Log.i("Camera", "Min exposure value = " + params.getMinExposureCompensation());
-                    //[auto, incandescent, fluorescent, warm-fluorescent, daylight, cloudy-daylight, twilight, shade]
+                    //white balance options [auto, incandescent, fluorescent, warm-fluorescent, daylight, cloudy-daylight, twilight, shade]
                     //warm-fluorescent for home field
+                    //change white balance based on field configuration
                     orientCamera();
                 }
                 catch (Exception e){
