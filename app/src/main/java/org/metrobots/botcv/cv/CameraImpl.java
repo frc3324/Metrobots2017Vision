@@ -13,6 +13,7 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.core.*;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class CameraImpl implements CvCameraViewListener {
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
     private Mat contourFrame = new Mat();
     private Point offset = new Point();
+    private int xOffset = 0;
+    private int yOffset = 0;
     private int status = 2;
 
     private int direction = 3;
@@ -47,8 +50,8 @@ public class CameraImpl implements CvCameraViewListener {
 
     private static double relativeDeltaX = 0.0;
     private static double relativeDeltaY = 0.0;
-    private static final double PERFECT_X = 640; //temporary values
-    private static final double PERFECT_Y = 360;
+    private static final double PERFECT_X = 360; //temporary values
+    private static final double PERFECT_Y = 240;
 
     private static final String DIRECTION = "Direction";
     private String seeDirection = "The direction";
@@ -99,15 +102,6 @@ public class CameraImpl implements CvCameraViewListener {
 
         //Converts the RGB frame to the HSV frame
 
-        //Empty's frames and lists to ensure the app does not crash and reduces lag
-        frame.empty();
-        hsv.empty();
-        hsv2.empty();
-        hierarchy.empty();
-        contours.clear();
-
-        //Converts the RGB frame to the HSV frame
-
         Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV);
 
         if (Math.abs(System.currentTimeMillis() - oldMillis) > 1000 && thresholSet < 5) {
@@ -123,35 +117,77 @@ public class CameraImpl implements CvCameraViewListener {
 
         //tries to remove random splotches of contours
 
-        //creates a copy so the original is unaffected
-        hsv.copyTo(hsv2);
-
-        //tries to remove random splotches of contours
-
-        Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
+        //Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
         Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
-        Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2);
+        Imgproc.blur(hsv, hsv, new Size(5,5));
+        //Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2);
 
-        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+        //Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
 
         //further tries to remove contours
 
         //further tries to remove contours
 
-        Imgproc.erode(hsv, hsv, element);
-        Imgproc.dilate(hsv, hsv, element);
-        Imgproc.dilate(hsv, hsv, element);
-        Imgproc.erode(hsv, hsv, element);
+//        Imgproc.erode(hsv, hsv, element);
+//        Imgproc.dilate(hsv, hsv, element);
+//        Imgproc.dilate(hsv, hsv, element);
+//        Imgproc.erode(hsv, hsv, element);
 
+        /*int hueLow = (0 * 360) / 255;
+        int hueHigh = (255 * 360) /255;
+
+        int satLow = (0 * 100) / 255;
+        int satHigh = (100 * 100) / 255;
+
+        int valLow = (175 * 100) / 255;
+        int valHigh = (255 * 100) / 255*/
+
+        int goodH = 65;
+        int goodS = 80;
+        int goodV = 90;
+        int thresholdH = 40;
+        int thresholdS = 40;
+        int thresholdV = 30;
+
+        goodH = goodH * 255 / 360;
+        goodS = goodS * 255 / 100;
+        goodV = goodV * 255 / 100;
+
+
+        int lowH = goodH - thresholdH;
+        int lowS = goodS - thresholdS;
+        int lowV = goodV - thresholdV;
+
+        int highH = goodH + thresholdH;
+        int highS = goodS + thresholdS;
+        int highV = goodV + thresholdV;
 
         //filters out colors outside of the set range of hsv //*100/255
+        // Good color is 150, 180, 20
         //Core.inRange(hsv, new Scalar(45, 100, 150), new Scalar(70, 255, 255), frame);
-        Core.inRange(hsv, new Scalar(0, 0, 175), new Scalar(255, 100, 255), frame);
+        //Core.inRange(hsv, new Scalar(0, 0, 175), new Scalar(255, 100, 255), frame);
+        //Core.inRange(hsv, new Scalar(0, 0, 175), new Scalar(255, 100, 255), frame);
+        Core.inRange(hsv, new Scalar(lowH, lowS, lowV), new Scalar(highH, highS, highV), frame);
 
 
         //Copies the black and white image to a new frame to prevent messing up the original
         frame.copyTo(contourFrame);
+
+        //Point center1 = new Point(PERFECT_X, PERFECT_Y);
+
+        //Log.i("Center color = ", frame.get((int)center1.x, (int)center1.y)[0] + frame.get((int)center1.x, (int)center1.y)[1] + frame.get((int)center1.x, (int)center1.y)[2] + "");
+        int centery = hsv.width() / 2;
+        int centerx = hsv.height() / 2;
+        double[] hsvvalue = hsv.get(centerx, centery);
+
+        hsvvalue[0] = hsvvalue[0] * 360 / 255;
+        hsvvalue[1] = hsvvalue[1] * 100 / 255;
+        hsvvalue[2] = hsvvalue[2] * 100 / 255;
+
+        //Log.i("H", "" + hsvvalue[0]);
+        //Log.i("S", "" + hsvvalue[1]);
+        //Log.i("V", "" + hsvvalue[2]);
 
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -174,21 +210,30 @@ public class CameraImpl implements CvCameraViewListener {
         try {
             //Creates the max variable
             int max = 0;
+            int max2 = 0;
+            double maxArea = 0;
+            double maxArea2 = 0;
             //Sets up loop to go through all contours
             for (int a = 0; a < contours.size(); a++) {
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
                 //Checks the area against the other areas of the contours to find out which is largest
-                if (s2 > Imgproc.contourArea(contours.get(max))) {
+                if (s2 > maxArea) {
                     //Sets largest contour equal to max variable
                     max = a;
+                    maxArea = Imgproc.contourArea(contours.get(max));
+                } else if (s2 > maxArea2){
+                    max2 = a;
+                    maxArea2 = Imgproc.contourArea(contours.get(max2));
                 }
             }
+
 
             try {
                 //System.out.println(Imgproc.contourArea(contours.get(max)));
                 //Gets the minimum area vertical(non titlted) rectangle that outlines the contour
                 Rect place = Imgproc.boundingRect(contours.get(max));
+                Rect place2 = Imgproc.boundingRect(contours.get(max2));
 
 
                 //System.out.println("Top Left Coordinate: " + place.tl());
@@ -196,13 +241,24 @@ public class CameraImpl implements CvCameraViewListener {
                 //Creates variable for center point
                 Point center = new Point();
 
-                //Sets variale fpr screen center so now we adjust the X and Y axis
+                //Sets variable fpr screen center so now we adjust the X and Y axis
                 //Point screenCenter = new Point();
                 //Creates top left point variable
                 Point topleft = place.tl();
+                Point topleft2 = place2.tl();
 
                 //Creates bottom right point variable
                 Point bottomright = place.br();
+                Point bottomright2 = place2.br();
+
+                double distanceFromC = bottomright.y - 360;
+                double distanceFromC2 = bottomright2.y - 360;
+
+                if (distanceFromC < distanceFromC2) {
+                    place = place2;
+                    bottomright = bottomright2;
+                    topleft = topleft2;
+                    }
 
                 //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
@@ -214,8 +270,9 @@ public class CameraImpl implements CvCameraViewListener {
 
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
-                
 
+                xOffset = (int) relativeDeltaX;
+                yOffset = (int) relativeDeltaY;
                 //Direction is the course of the robot (robot orientated)
                 //if ((Math.abs(relativeDeltaX)) >= 50) { //5 = arbutrary number //was Math.abs((mat.size().width / 2) - center.x
                 if (relativeDeltaY < -50) { //was (mat.size().width / 2) - center.x)
@@ -316,6 +373,10 @@ public class CameraImpl implements CvCameraViewListener {
     public int getDirection() {
         return direction;
     }
+
+    public int getXOffset() {return xOffset;}
+
+    public int getYOffset() {return yOffset;}
 
 }
 

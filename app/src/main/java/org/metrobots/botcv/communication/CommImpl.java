@@ -40,5 +40,11 @@ public class CommImpl implements CommInterface {
         return activity.getCameraImpl().getDirection();
     }
 
+    @Override
+    public int getXOffset() { return activity.getCameraImpl().getXOffset(); }
+
+    @Override
+    public int getYOffset() { return activity.getCameraImpl().getYOffset(); }
+
     }
 

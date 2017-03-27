@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.HOGDescriptor;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -71,21 +73,30 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                 try {
                     mCamera = Camera.open();
                     Camera.Parameters params = mCamera.getParameters();
-                    if (params.isAutoExposureLockSupported()) {
-                        params.setExposureCompensation(0);
-                        params.setAutoExposureLock(true); //was true
-                        //params.getWhiteBalance();
-                        params.setAutoWhiteBalanceLock(true);
-                        params.setWhiteBalance("warm-fluorescent"); //was 2800K  10000K
 
-                        mCamera.setParameters(params);
+                    params.setExposureCompensation(-15);
+                    params.setAutoExposureLock(false); //was true
+                    params.set("iso", 100);
+                    params.setSceneMode(Parameters.SCENE_MODE_SNOW);
+                    //params.set("max-exposure-time", 100);
+
+                    Log.i("Camera", "Params: " + params.flatten());
+                    String[] parameters = params.flatten().split(";");
+                    for (int i = 0; i < parameters.length; i++) {
+                        Log.i("Parameter ", parameters[i]);
                     }
-                    params = mCamera.getParameters();
-                    Log.i("Camera", "Exposure setting = " + params.get("exposure"));
-                    Log.i("Camera", "White Balance setting = " + params.get("whitebalance"));
-                    Log.i("Camera", "Supported white balance = " + params.getSupportedWhiteBalance());
-                    Log.i("Camera", "Max exposure value = " + params.getMaxExposureCompensation());
-                    Log.i("Camera", "Min exposure value = " + params.getMinExposureCompensation());
+
+                    //for (int i = 0; i < params.getSupportedPreviewFpsRange(); i++)
+                    //Log.i("preview fps", params.getSupportedPreviewFpsRange());
+                    //params.setPreviewFpsRange(30000, 30000);
+
+                    //params.setPreviewSize(176, 144);
+                    //params.setPictureSize(176, 144);
+                    //params.setPreviewFrameRate(30000);
+                    //params.setPreviewSize(176, 144);
+                    //params.setWhiteBalance(Parameters.WHITE_BALANCE_WARM_FLUORESCENT);
+
+                    mCamera.setParameters(params);
                     //[auto, incandescent, fluorescent, warm-fluorescent, daylight, cloudy-daylight, twilight, shade]
                     //warm-fluorescent for home field
                     orientCamera();
@@ -290,7 +301,7 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
     }
 
     @Override
-    protected void disconnectCamera() {
+    public void disconnectCamera() {
         /* 1. We need to stop thread which updating the frames
          * 2. Stop camera and release it
          */

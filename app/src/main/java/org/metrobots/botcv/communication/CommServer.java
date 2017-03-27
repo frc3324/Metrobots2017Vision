@@ -13,7 +13,7 @@ import java.net.Socket;
  */
 public class CommServer {
     private CommImpl implementation;
-    private CallHandler handler = new CallHandler();
+    public CallHandler handler = new CallHandler();
 
     public CommServer(CommImpl impl) throws LipeRMIException {
         this.implementation = impl;

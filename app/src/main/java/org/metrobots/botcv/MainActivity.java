@@ -5,12 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import net.sf.lipermi.net.Server;
+
 import org.metrobots.botcv.communication.CommImpl;
+import org.metrobots.botcv.communication.CommInterface;
 import org.metrobots.botcv.communication.CommServer;
 import org.metrobots.botcv.cv.BotCameraView;
 import org.metrobots.botcv.cv.CameraImpl;
 import org.metrobots.botcv.cv.LimiterSlider;
 import org.metrobots.botcv.peripheral.PeripheralManager;
+
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
@@ -31,12 +38,17 @@ public class MainActivity extends AppCompatActivity {
 
         cameraView = (BotCameraView) findViewById(R.id.cameraView);
         cameraView.setVisibility(SurfaceView.VISIBLE);
+        cameraView.enableFpsMeter();
+        cameraView.isHardwareAccelerated();
         cameraView.setCvCameraViewListener(cameraImpl);
         cameraView.enableView();
+
 
         try {
             new CommServer(new CommImpl(this)).start(5800);
             System.out.println("Server started.");
+            //Socket sock = new Socket();
+            //System.out.println(sock.getRemoteSocketAddress().toString());
         } catch (Exception e) { e.printStackTrace(); }
     }
 
