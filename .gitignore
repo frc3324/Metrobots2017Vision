@@ -98,7 +98,10 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 .idea/compiler.xml
 .idea/copyright/
 .idea/encodings.xml
