@@ -8,7 +8,11 @@ import android.hardware.Camera.Parameters;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Core;
@@ -255,6 +259,40 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
         }
         catch (Exception ignored) {}
     }
+
+//    // Added 03/28/17
+//    public int getDisplayOrientation() {
+//        Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+//        int rotation = display.getRotation();
+//        int degrees = 0;
+//        switch (rotation) {
+//            case Surface.ROTATION_0:
+//                degrees = 0;
+//                break;
+//            case Surface.ROTATION_90:
+//                degrees = 90;
+//                break;
+//            case Surface.ROTATION_180:
+//                degrees = 180;
+//                break;
+//            case Surface.ROTATION_270:
+//                degrees = 270;
+//                break;
+//        }
+//
+//        android.hardware.Camera.CameraInfo camInfo =
+//                new android.hardware.Camera.CameraInfo();
+//        android.hardware.Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, camInfo);
+//
+//        int result = (camInfo.orientation - degrees + 360) % 360;
+//        return result;
+//    }
+//
+//    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+//        int rotation = getDisplayOrientation();
+//        mCamera.setDisplayOrientation(rotation);
+//        Log.i("Orientation", "Success!");
+//    }
 
     protected void releaseCamera() {
         synchronized (this) {
