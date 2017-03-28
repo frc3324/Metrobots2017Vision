@@ -28,6 +28,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
+    @SuppressWarnings("FieldCanBeLocal")
     private BotCameraView cameraView;
     private LimiterSlider limiterSlider = new LimiterSlider();
     private CameraImpl cameraImpl = new CameraImpl();
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void connectUSB() {
+    /*private void connectUSB() {
         Intent tetherSettings = new Intent();
         tetherSettings.setClassName("com.android.settings", "com.android.settings.TetherSettings");
         tetherSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Tether success!");
 
 
-        /*UsbManager wifiManager = (UsbManager) getSystemService(USB_SERVICE);
+        UsbManager wifiManager = (UsbManager) getSystemService(USB_SERVICE);
 
 
         Method[] methods = wifiManager.getClass().getDeclaredMethods();
@@ -86,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             }
-        }*/
-    }
+        }
+    }*/
 
     public void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
