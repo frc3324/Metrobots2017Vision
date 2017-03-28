@@ -117,9 +117,10 @@ public class CameraImpl implements CvCameraViewListener {
 
         //tries to remove random splotches of contours
 
-        Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
-        Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
-        Imgproc.blur(hsv, hsv, new Size(5,5));
+        //Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
+        //Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
+        Imgproc.blur(hsv, hsv, new Size(10,10));
+        Imgproc.blur(hsv, hsv, new Size(10,10));
         //Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2);
 
         //Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
@@ -129,8 +130,8 @@ public class CameraImpl implements CvCameraViewListener {
 
         //further tries to remove contours
 
-//        Imgproc.erode(hsv, hsv, element);
-//        Imgproc.dilate(hsv, hsv, element);
+        //Imgproc.erode(hsv, hsv, element);
+        //Imgproc.dilate(hsv, hsv, element);
 //        Imgproc.dilate(hsv, hsv, element);
 //        Imgproc.erode(hsv, hsv, element);
 
@@ -145,10 +146,10 @@ public class CameraImpl implements CvCameraViewListener {
 
         int goodH = 65;
         int goodS = 80;
-        int goodV = 90;
+        int goodV = 100;
         int thresholdH = 40;
         int thresholdS = 40;
-        int thresholdV = 25;
+        int thresholdV = 30;
 
         goodH = goodH * 255 / 360;
         goodS = goodS * 255 / 100;
