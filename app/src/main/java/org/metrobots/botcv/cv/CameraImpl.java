@@ -51,7 +51,7 @@ public class CameraImpl implements CvCameraViewListener {
     private static double relativeDeltaX = 0.0;
     private static double relativeDeltaY = 0.0;
     private static final double PERFECT_X = 360; //temporary values
-    private static final double PERFECT_Y = 240;
+    private static final double PERFECT_Y = 220;
 
     private static final String DIRECTION = "Direction";
     private String seeDirection = "The direction";
@@ -117,7 +117,7 @@ public class CameraImpl implements CvCameraViewListener {
 
         //tries to remove random splotches of contours
 
-        //Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
+        Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
         Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
         Imgproc.blur(hsv, hsv, new Size(5,5));
         //Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2);
@@ -148,7 +148,7 @@ public class CameraImpl implements CvCameraViewListener {
         int goodV = 90;
         int thresholdH = 40;
         int thresholdS = 40;
-        int thresholdV = 30;
+        int thresholdV = 25;
 
         goodH = goodH * 255 / 360;
         goodS = goodS * 255 / 100;
