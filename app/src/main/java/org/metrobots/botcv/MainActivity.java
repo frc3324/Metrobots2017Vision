@@ -1,5 +1,6 @@
 package org.metrobots.botcv;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private PeripheralManager peripheralManager;
     private boolean isAllianceRed = true;
     private final String TAG = "MainActivity";
+    // Test
+    private double centerHsv[] = new CameraImpl().getCenterHsv();
     //private int hsvVal[3] = new getCenterHsv(); // TODO: Get center HSV value from cameraImpl
 
     static {
@@ -79,14 +82,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    // Known issue: Surface: getSlotFromBufferLocked  No influence on app, no crash
     public boolean onOptionsItemSelected(MenuItem item) {
         // Get which elements in the menu was clicked
         int id = item.getItemId();
         String TAG = "Menu Item";
 
         switch (id) {
-            case R.id.first_item:
-                Log.i(TAG,"3324!");
+            case R.id.usb_tethering:
+                // TODO: Add jump to usb tethering
+                Log.i(TAG,"Jump to USB Tethering Setting");
                 break;
             case R.id.color_change:
                 Log.i(TAG,"Change color!");
@@ -97,12 +102,25 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.redAlliance)));
                 }
+                break;
+            case R.id.center_hsv:
+                // TODO: Display hsv value to screen
+                // TODO: Find a way to display the HSV value
+                // Currently, print center hsv value via adb
+                Log.d(TAG, "HSV: "+ centerHsv[0]);
+            case R.id.hsv_display:
 
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+//    // TODO: Dynamically update title of R.id.hsv_display
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        MenuItem hsvVal = menu.findItem(R.id.hsv_display);
+//    }
 
     /*private void connectUSB() {
         Intent tetherSettings = new Intent();
@@ -142,5 +160,8 @@ public class MainActivity extends AppCompatActivity {
         return cameraImpl;
     }
 
+//    public CameraImpl getCenterHsv() {
+//        return centerHsv;
+//    }
 
 }

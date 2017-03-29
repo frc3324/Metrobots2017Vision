@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BotCV</string>
-    <string name="action_settings">This is a menu</string>
     <string name="item_2">Change Alliance</string>
-    <string name="item_1">Info</string>
+    <string name="item_1">USB Tethering</string>
+    <string name="item_3">HSV value</string>
+    <string name="item_4">-No Value-</string>
 </resources>

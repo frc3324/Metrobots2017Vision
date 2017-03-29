@@ -36,6 +36,7 @@ public class CameraImpl implements CvCameraViewListener {
     private int xOffset = 0;
     private int yOffset = 0;
     private int status = 2;
+    private double centerHsv[] = {1999, 2999, 3999}; // previously hsvvalue   HSV value of the center point on camera preview
 
     private int direction = 3;
     private int magnitude = 0;
@@ -180,11 +181,14 @@ public class CameraImpl implements CvCameraViewListener {
         //Log.i("Center color = ", frame.get((int)center1.x, (int)center1.y)[0] + frame.get((int)center1.x, (int)center1.y)[1] + frame.get((int)center1.x, (int)center1.y)[2] + "");
         int centery = hsv.width() / 2;
         int centerx = hsv.height() / 2;
-        double[] hsvvalue = hsv.get(centerx, centery);
+        centerHsv = hsv.get(centerx, centery);
 
-        hsvvalue[0] = hsvvalue[0] * 360 / 255;
-        hsvvalue[1] = hsvvalue[1] * 100 / 255;
-        hsvvalue[2] = hsvvalue[2] * 100 / 255;
+        centerHsv[0] = centerHsv[0] * 360 / 255;
+        centerHsv[1] = centerHsv[1] * 100 / 255;
+        centerHsv[2] = centerHsv[2] * 100 / 255;
+
+        //Test Purpose
+        //centerHsv[0] = 2332;
 
         //Log.i("H", "" + hsvvalue[0]);
         //Log.i("S", "" + hsvvalue[1]);
@@ -378,6 +382,11 @@ public class CameraImpl implements CvCameraViewListener {
     public int getXOffset() {return xOffset;}
 
     public int getYOffset() {return yOffset;}
+
+    // Get center point hsv value on the camera preview
+    public double[] getCenterHsv() {
+        return centerHsv;
+    }
 
 }
 

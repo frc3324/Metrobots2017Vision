@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tiger.myapplication.MainActivity">
     <item
-        android:id="@+id/first_item"
+        android:id="@+id/usb_tethering"
         android:orderInCategory="100"
         android:title="@string/item_1"
         app:showAsAction="never" />
@@ -12,5 +12,15 @@
         android:id="@+id/color_change"
         android:orderInCategory="100"
         android:title="@string/item_2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/center_hsv"
+        android:orderInCategory="100"
+        android:title="@string/item_3"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/hsv_display"
+        android:orderInCategory="100"
+        android:title="@string/item_4"
         app:showAsAction="never" />
 </menu>
