@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BotCV</string>
+    <string name="action_settings">This is a menu</string>
+    <string name="item_2">Change Alliance</string>
+    <string name="item_1">Info</string>
 </resources>
