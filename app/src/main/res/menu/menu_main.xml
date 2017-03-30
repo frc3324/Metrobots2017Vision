@@ -6,8 +6,7 @@
     <item
         android:id="@+id/usb_tethering"
         android:orderInCategory="100"
-        android:title="@string/item_1"
-        app:showAsAction="never" />
+        android:title="@string/item_1" />
     <item
         android:id="@+id/color_change"
         android:orderInCategory="100"
@@ -17,10 +16,5 @@
         android:id="@+id/center_hsv"
         android:orderInCategory="100"
         android:title="@string/item_3"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/hsv_display"
-        android:orderInCategory="100"
-        android:title="@string/item_4"
         app:showAsAction="never" />
 </menu>

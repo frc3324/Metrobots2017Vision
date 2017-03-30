@@ -190,9 +190,9 @@ public class CameraImpl implements CvCameraViewListener {
         //Test Purpose
         //centerHsv[0] = 2332;
 
-        //Log.i("H", "" + hsvvalue[0]);
-        //Log.i("S", "" + hsvvalue[1]);
-        //Log.i("V", "" + hsvvalue[2]);
+        //Log.i("H", "" + centerHsv[0]);
+        //Log.i("S", "" + centerHsv[1]);
+        //Log.i("V", "" + centerHsv[2]);
 
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);

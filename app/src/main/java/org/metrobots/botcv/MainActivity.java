@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private PeripheralManager peripheralManager;
     private boolean isAllianceRed = true;
     private final String TAG = "MainActivity";
-    // Test
-    private double centerHsv[] = new CameraImpl().getCenterHsv();
-    //private int hsvVal[3] = new getCenterHsv(); // TODO: Get center HSV value from cameraImpl
 
     static {
         System.loadLibrary("opencv_java3");
@@ -89,10 +86,12 @@ public class MainActivity extends AppCompatActivity {
         String TAG = "Menu Item";
 
         switch (id) {
+            // Once the Set USB Tethering is clicked, jump to tethering setting
             case R.id.usb_tethering:
                 // TODO: Add jump to usb tethering
                 Log.i(TAG,"Jump to USB Tethering Setting");
                 break;
+            // Once clicked, change layout color
             case R.id.color_change:
                 Log.i(TAG,"Change color!");
                 if(isAllianceRed) {
@@ -103,52 +102,41 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.redAlliance)));
                 }
                 break;
+            // Once clicked, print HSV value of the center point
             case R.id.center_hsv:
-                // TODO: Display hsv value to screen
-                // TODO: Find a way to display the HSV value
-                // Currently, print center hsv value via adb
-                Log.d(TAG, "HSV: "+ centerHsv[0]);
-            case R.id.hsv_display:
-
+                double centerHsv[] = new CameraImpl().getCenterHsv();
+                String hsvMsg = "H: " + (int)centerHsv[0] + " S: " + (int)centerHsv[1] + " V: " + (int)centerHsv[2];
+                Toast.makeText(this, hsvMsg, Toast.LENGTH_LONG).show();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-//    // TODO: Dynamically update title of R.id.hsv_display
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        MenuItem hsvVal = menu.findItem(R.id.hsv_display);
+//    private void connectUSB() {
+//        Intent tetherSettings = new Intent();
+//        tetherSettings.setClassName("com.android.settings", "com.android.settings.TetherSettings");
+//        tetherSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(tetherSettings);
+//        System.out.println("Tether success!");
+//
+//        UsbManager wifiManager = (UsbManager) getSystemService(USB_SERVICE);
+//
+//        Method[] methods = wifiManager.getClass().getDeclaredMethods();
+//        for (Method method : methods) {
+//            System.out.println(method.getName().toString());
+//            if (method.getName().equals("getDeviceList")) {
+//                try {
+//                    //method.invoke(wifiManager, null, enable);
+//                    System.out.println("DeviceList?" + method.invoke(wifiManager, null, enable).toString());
+//                } catch (Exception ex) {
+//                    System.out.println("tether fail:" + ex.toString());
+//                }
+//                break;
+//            }
+//        }
 //    }
 
-    /*private void connectUSB() {
-        Intent tetherSettings = new Intent();
-        tetherSettings.setClassName("com.android.settings", "com.android.settings.TetherSettings");
-        tetherSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(tetherSettings);
-        System.out.println("Tether success!");
-
-
-        UsbManager wifiManager = (UsbManager) getSystemService(USB_SERVICE);
-
-
-        Method[] methods = wifiManager.getClass().getDeclaredMethods();
-        for (Method method : methods) {
-            System.out.println(method.getName().toString());
-            if (method.getName().equals("getDeviceList")) {
-                try {
-                    //method.invoke(wifiManager, null, enable);
-                    System.out.println("DeviceList?" + method.invoke(wifiManager, null, enable).toString());
-                } catch (Exception ex) {
-                    System.out.println("tether fail:" + ex.toString());
-                }
-                break;
-            }
-        }
-    }*/
-
-    public void toast(String text) {
+    public void Toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
@@ -159,9 +147,5 @@ public class MainActivity extends AppCompatActivity {
     public CameraImpl getCameraImpl() {
         return cameraImpl;
     }
-
-//    public CameraImpl getCenterHsv() {
-//        return centerHsv;
-//    }
 
 }
