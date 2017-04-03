@@ -102,10 +102,7 @@ crashlytics-build.properties
 .idea/encodings.xml
 .idea/libraries/
 .idea/modules.xml
-<<<<<<< HEAD
 openCVLibrary310/build/*
-=======
->>>>>>> 4c56a6d61338e92b1208d2a908bbf7dfbadb1a47
 openCVLibrary310/build/generated/assets/
 openCVLibrary310/build/generated/res/
 openCVLibrary310/build/generated/source/aidl/androidTest/
