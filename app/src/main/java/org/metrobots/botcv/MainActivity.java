@@ -26,6 +26,7 @@ import org.metrobots.botcv.cv.BotCameraView;
 import org.metrobots.botcv.cv.CameraImpl;
 import org.metrobots.botcv.cv.LimiterSlider;
 import org.metrobots.botcv.peripheral.PeripheralManager;
+import org.metrobots.botcv.logger.log2file;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         cameraView.isHardwareAccelerated();
         cameraView.setCvCameraViewListener(cameraImpl);
         cameraView.enableView();
+
+
+        log2file.visionLogInit();
+        log2file.log("Hello Vision Log!");
 
         //setWifiTetheringEnabled(true);
         //connectUSB();
