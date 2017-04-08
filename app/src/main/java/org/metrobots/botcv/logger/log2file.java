@@ -138,6 +138,7 @@ public class log2file {
      * @param msg Message to be saved in the file
      */
 
+    // TODO: reduce logging rate to avoid potential memory problem
     public static void visionLog(String TAG, String msg) {
         log(TAG + " " + msg);   // Not the log for math!
         Log.i(TAG, msg);
