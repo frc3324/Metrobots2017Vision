@@ -14,6 +14,8 @@ import android.view.SurfaceHolder;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import org.metrobots.botcv.MainActivity;
+import org.metrobots.botcv.logger.log2file;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -87,7 +89,9 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                     Log.i("Camera", "Params: " + params.flatten());
                     String[] parameters = params.flatten().split(";");
                     for (int i = 0; i < parameters.length; i++) {
+                        final String TAG = "Parameter ";
                         Log.i("Parameter ", parameters[i]);
+                        log2file.visionLog(TAG, parameters[i]);
                     }
 
                     //for (int i = 0; i < params.getSupportedPreviewFpsRange(); i++)
