@@ -20,12 +20,26 @@ import org.metrobots.botcv.cv.BotCameraView;
 import org.metrobots.botcv.cv.CameraImpl;
 import org.metrobots.botcv.cv.LimiterSlider;
 import org.metrobots.botcv.peripheral.PeripheralManager;
+import org.metrobots.botcv.Log2File.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Environment;
+import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
@@ -55,6 +69,17 @@ public class MainActivity extends AppCompatActivity {
 
         //setWifiTetheringEnabled(true);
         //connectUSB();
+
+        Logger.init("test.folder");
+        Logger.init("Verbose");
+        
+        Logger.init("Debug");
+        Logger.init("Info");
+        Logger.init("Warn");
+        Logger.init("Error");
+        Logger.init("Assert");
+
+        Logger.log("Log2File", "Data");
 
         try {
             new CommServer(new CommImpl(this)).start(5800);
