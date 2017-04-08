@@ -117,10 +117,10 @@ public class CameraImpl implements CvCameraViewListener {
 
         //tries to remove random splotches of contours
 
-        //Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
+         Imgproc.bilateralFilter(hsv, hsv2, 3, 10, 10);
         //Imgproc.medianBlur(hsv, hsv, 5); //changed from 3 to 5
         Imgproc.blur(hsv, hsv, new Size(10,10));
-        Imgproc.blur(hsv, hsv, new Size(10,10));
+        //Imgproc.blur(hsv, hsv, new Size(10,10));
         //Imgproc.GaussianBlur(hsv, hsv, new Size(5, 5), 2);
 
         //Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
@@ -144,12 +144,12 @@ public class CameraImpl implements CvCameraViewListener {
         int valLow = (175 * 100) / 255;
         int valHigh = (255 * 100) / 255*/
 
-        int goodH = 65;
-        int goodS = 80;
+        int goodH = 80;
+        int goodS = 93;
         int goodV = 100;
-        int thresholdH = 40;
-        int thresholdS = 40;
-        int thresholdV = 30;
+        int thresholdH = 40;  //was 40
+        int thresholdS = 10; //was 40
+        int thresholdV = 10; //was 30
 
         goodH = goodH * 255 / 360;
         goodS = goodS * 255 / 100;
@@ -186,9 +186,9 @@ public class CameraImpl implements CvCameraViewListener {
         hsvvalue[1] = hsvvalue[1] * 100 / 255;
         hsvvalue[2] = hsvvalue[2] * 100 / 255;
 
-        //Log.i("H", "" + hsvvalue[0]);
-        //Log.i("S", "" + hsvvalue[1]);
-        //Log.i("V", "" + hsvvalue[2]);
+        Log.i("H", "" + hsvvalue[0]);
+        Log.i("S", "" + hsvvalue[1]);
+        Log.i("V", "" + hsvvalue[2]);
 
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -212,8 +212,8 @@ public class CameraImpl implements CvCameraViewListener {
             //Creates the max variable
             int max = 0;
             int max2 = 0;
-            double maxArea = 0;
-            double maxArea2 = 0;
+            double maxArea = 500;
+            double maxArea2 = 500;
             //Sets up loop to go through all contours
             for (int a = 0; a < contours.size(); a++) {
                 //Gets the area of all of the contours
@@ -229,7 +229,7 @@ public class CameraImpl implements CvCameraViewListener {
                 }
             }
 
-
+            //System.out.println("");
             try {
                 //System.out.println(Imgproc.contourArea(contours.get(max)));
                 //Gets the minimum area vertical(non titlted) rectangle that outlines the contour
