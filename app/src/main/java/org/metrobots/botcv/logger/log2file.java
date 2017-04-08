@@ -139,8 +139,9 @@ public class log2file {
      */
 
     // TODO: reduce logging rate to avoid potential memory problem
+    // TODO: add necessary formatter for array value output
     public static void visionLog(String TAG, String msg) {
-        log(TAG + " " + msg);   // Not the log for math!
+        log("[ " + TAG + " ]" + "  " + msg);   // Not the log for math!
         Log.i(TAG, msg);
     }
 

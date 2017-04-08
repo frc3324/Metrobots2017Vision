@@ -89,8 +89,8 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                     Log.i("Camera", "Params: " + params.flatten());
                     String[] parameters = params.flatten().split(";");
                     for (int i = 0; i < parameters.length; i++) {
-                        final String TAG = "Parameter ";
-                        Log.i("Parameter ", parameters[i]);
+                        final String TAG = "Parameter";
+                        Log.i(TAG, parameters[i]);
                         log2file.visionLog(TAG, parameters[i]);
                     }
 
