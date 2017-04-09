@@ -37,7 +37,7 @@ public class CameraImpl implements CvCameraViewListener {
     private int xOffset = 0;
     private int yOffset = 0;
     private int status = 2;
-    private double centerHsv[] = {1999, 2999, 3999}; // previously hsvvalue   HSV value of the center point on camera preview
+    private static double centerHsv[] = {1999, 2999, 3999}; // previously hsvvalue   HSV value of the center point on camera preview
 
     private int direction = 3;
     private int magnitude = 0;
@@ -195,7 +195,7 @@ public class CameraImpl implements CvCameraViewListener {
         //Log.i("S", "" + centerHsv[1]);
         //Log.i("V", "" + centerHsv[2]);
 
-        log2file.visionLog("Center HSV", "H: " + (int)centerHsv[0] + "  S: " + (int)centerHsv[1] + "  V: " + (int)centerHsv[2]);
+        //log2file.visionLog("Center HSV", "H: " + (int)centerHsv[0] + "  S: " + (int)centerHsv[1] + "  V: " + (int)centerHsv[2]);
 
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);

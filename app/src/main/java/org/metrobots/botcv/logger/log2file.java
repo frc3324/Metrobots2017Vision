@@ -118,10 +118,10 @@ public class log2file {
      * Initialize vision log file
      * File will be saved under SdCard/Vision Logs/, the file name will be dd-MM-yy HH:mm:SS
      */
+
     public static void visionLogInit() {
         long time = System.currentTimeMillis();
         SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy HH:mm:SS");
-        formater.format(time);
 
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + "/Vision Logs/");
@@ -144,6 +144,9 @@ public class log2file {
         log("[ " + TAG + " ]" + "  " + msg);   // Not the log for math!
         Log.i(TAG, msg);
     }
+
+
+    // TODO: Enable/Disable logger in option menu
 
     /**
      * Tutorial: How to call visionLog() method?
