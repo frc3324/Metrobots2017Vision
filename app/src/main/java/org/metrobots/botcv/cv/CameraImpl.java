@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.metrobots.botcv.Log2File.Logger;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.core.*;
@@ -190,6 +191,8 @@ public class CameraImpl implements CvCameraViewListener {
         Log.i("S", "" + hsvvalue[1]);
         Log.i("V", "" + hsvvalue[2]);
 
+        Logger.log("HSV", "H: " + (int)hsvvalue[0] + " S: " + (int)hsvvalue[1] + " V: " + (int)hsvvalue[2]);
+
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         //Draws the contours found on the original camera feed
@@ -212,12 +215,16 @@ public class CameraImpl implements CvCameraViewListener {
             //Creates the max variable
             int max = 0;
             int max2 = 0;
-            double maxArea = 500;
-            double maxArea2 = 500;
+            double maxArea = 0;
+            double maxArea2 = 0;
             //Sets up loop to go through all contours
-            for (int a = 0; a < contours.size(); a++) {
+            for (int a = 0; a < contours.size(); a++) { //was <
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
+                //Doesn't look at contours lower than 900
+                if (s2 < 900) { //900=arbitrary number
+                    continue;
+                }
                 //Checks the area against the other areas of the contours to find out which is largest
                 if (s2 > maxArea) {
                     //Sets largest contour equal to max variable
@@ -274,6 +281,7 @@ public class CameraImpl implements CvCameraViewListener {
 
                 xOffset = (int) relativeDeltaX;
                 yOffset = (int) relativeDeltaY;
+
                 //Direction is the course of the robot (robot orientated)
                 //if ((Math.abs(relativeDeltaX)) >= 50) { //5 = arbutrary number //was Math.abs((mat.size().width / 2) - center.x
                 if (relativeDeltaY < -50) { //was (mat.size().width / 2) - center.x)
@@ -286,7 +294,6 @@ public class CameraImpl implements CvCameraViewListener {
                     //Tells the rio that the robot is within the margin of error
                     direction = 0;
                 }
-
 
                 seeDirection = "The direction " + direction;
                 Log.i(DIRECTION, seeDirection);
@@ -310,7 +317,8 @@ public class CameraImpl implements CvCameraViewListener {
                     magnitude = 0;
                 }
 
-
+                Logger.log("xOffset", "value: " + relativeDeltaX);
+                Logger.log("yOffset", "value: " + relativeDeltaY);
 
                 seeMagnitude = "The magnitude " + magnitude;
                 Log.i(MAGNITUDE, seeMagnitude);

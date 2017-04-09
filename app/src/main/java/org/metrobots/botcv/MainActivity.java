@@ -70,16 +70,9 @@ public class MainActivity extends AppCompatActivity {
         //setWifiTetheringEnabled(true);
         //connectUSB();
 
-        Logger.init("test.folder");
-        Logger.init("Verbose");
-        
-        Logger.init("Debug");
-        Logger.init("Info");
-        Logger.init("Warn");
-        Logger.init("Error");
-        Logger.init("Assert");
 
-        Logger.log("Log2File", "Data");
+        Logger.init("Log2File", "Data.txt");
+        //Logger.log("Tag", );
 
         try {
             new CommServer(new CommImpl(this)).start(5800);

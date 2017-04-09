@@ -41,11 +41,14 @@ public class Logger {
      * @param fileName file name
      */
     public static void init(String directory, String fileName) {
+        long time = System.currentTimeMillis();
+        SimpleDateFormat formater = new SimpleDateFormat("HH:mm:SS  dd-MM-yyyy");
+
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + "/"+directory+"/");
-        dir.mkdirs();
-        file = new File(dir, fileName);
-        file.mkdir();
+        dir.getParentFile().mkdirs();
+        file = new File(dir, formater.format(time) + ".txt"); //was fileName
+        file.getParentFile().mkdir();
     }
     /**
      * Write to file with custom tag.
@@ -60,6 +63,7 @@ public class Logger {
     init();
     }
     writeStringToAFile(tag, data, file);
+
         System.out.println("File successfully saved!");
         Log.i("Tag", "File successfully saved!");
     }
@@ -81,14 +85,15 @@ public class Logger {
      */
     private static void writeStringToAFile(String tag, final String data, File file) {
         long time = System.currentTimeMillis();
-        SimpleDateFormat formater = new SimpleDateFormat("HH:mm:SS  dd/MM/yyyy [Z]");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:SS");
 
         BufferedWriter out=null;
         try {
             out = new BufferedWriter(new FileWriter(file,true));
-            String lineToWriteToFile = formater.format(time) + " --- " + data+"\n\r";
+            String lineToWriteToFile = formatter.format(time) + " --- " + "[" + tag + "] " + data + "\n\r";
             out.write(lineToWriteToFile);
-            Log.d("Log2File",""+data);
+            Log.d("Log2File","" + data);
 
         } catch (IOException e) {
             e.printStackTrace();
