@@ -222,7 +222,7 @@ public class CameraImpl implements CvCameraViewListener {
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
                 //Doesn't look at contours lower than 900
-                if (s2 < 900) { //900=arbitrary number
+                if (s2 < 900) { //900 = arbitrary number
                     continue;
                 }
                 //Checks the area against the other areas of the contours to find out which is largest
@@ -270,11 +270,24 @@ public class CameraImpl implements CvCameraViewListener {
 
                 //Finds the width of rectangle
                 double width = (bottomright.x - topleft.x);
-                double height = (bottomright.y - topleft.y);
+                double height = (bottomright.y - topleft.y); //not used because no magnitude
 
-                center.x = topleft.x + width/2;
-                center.y = topleft.y + height/2;
+                //double xcenter = topleft.x + width/2;
+                //double ycenter = topleft.y + height/2;
 
+                //center.x = topleft.x + width/2;
+                //center.y = topleft.y + height/2;
+
+                double contourCenterx = hsv.width()/2;
+                double contourCentery = hsv.height()/2;
+
+                double[] centerHSV = hsv.get((int)contourCenterx, (int)contourCentery);
+
+                centerHSV[0] = centerHSV[0] * 360 / 255;
+                centerHSV[1] = centerHSV[1] * 100 / 255;
+                centerHSV[2] = centerHSV[2] * 100 / 255;
+
+                Logger.log("Main Contour HSV", "H: " + centerHSV[0] + " S: " + centerHSV[1] + " V: " + centerHSV[2]);
 
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
