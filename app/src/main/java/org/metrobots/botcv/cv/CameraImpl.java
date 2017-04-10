@@ -61,6 +61,9 @@ public class CameraImpl implements CvCameraViewListener {
     private String seeMagnitude = "The magnitude";
 
 
+    private static String centerHSVString = "N/A";
+
+
     //temp code
     private LimiterSlider limiterSlider;
 
@@ -289,6 +292,8 @@ public class CameraImpl implements CvCameraViewListener {
 
                 Logger.log("Main Contour HSV", "H: " + centerHSV[0] + " S: " + centerHSV[1] + " V: " + centerHSV[2]);
 
+                centerHSVString = "H: " + centerHSV[0] + " S: " + centerHSV[1] + " V: " + centerHSV[2];
+
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
 
@@ -384,6 +389,8 @@ public class CameraImpl implements CvCameraViewListener {
         return mat; //was mat
     }
 
+
+
     public int getStatus() {
         return status;
     }
@@ -396,9 +403,11 @@ public class CameraImpl implements CvCameraViewListener {
         return direction;
     }
 
-    public int getXOffset() {return xOffset;}
+    public String getHSV() { return centerHSVString; }
 
-    public int getYOffset() {return yOffset;}
+    public int getXOffset() { return xOffset; }
+
+    public int getYOffset() { return yOffset; }
 
 }
 

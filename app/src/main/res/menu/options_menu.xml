@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context = "tiger.myapplications.MainActivity">
+
+<item android:id="@+id/tethering"
+    android:title="@string/item0" />
+<item android:id="@+id/hsv"
+    android:title="@string/item1" />
+<item android:id="@+id/alliance"
+    android:title="@string/item2" />
+
+</menu>

@@ -41,6 +41,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 
+import android.view.MenuItem;
+
 public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("FieldCanBeLocal")
     private BotCameraView cameraView;
@@ -107,6 +109,59 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tethering:
+                connectUSB();
+                break;
+            case R.id.hsv:
+                printHSV();
+                return true;
+            case R.id.alliance:
+                switchAlliance();
+                return true;
+        }
+        return false;
+    }
+
+    private void connectUSB() {
+        Intent tetherSettings = new Intent();
+        tetherSettings.setClassName("com.android.settings", "com.android.settings.TetherSettings");
+        tetherSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(tetherSettings);
+        System.out.println("Tether success!");
+
+        UsbManager wifiManager = (UsbManager) getSystemService(USB_SERVICE);
+
+        Method[] methods = wifiManager.getClass().getDeclaredMethods();
+        for (Method method : methods) {
+            System.out.println(method.getName().toString());
+            if (method.getName().equals("getDeviceList")) {
+                try {
+                    //method.invoke(wifiManager, null, enable);
+                    System.out.println("DeviceList?" + method.invoke(wifiManager, null, 1).toString());
+                } catch (Exception ex) {
+                    System.out.println("tether fail:" + ex.toString());
+                }
+                break;
+            }
+        }
+    }
+
+    private void printHSV() {
+        toast("Center HSV " + new CameraImpl().getHSV());
+    }
+
+    private void switchAlliance() {
+
+    }
 
     public void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
