@@ -2,10 +2,12 @@
 Android vision code for the 2017 SteamWork competition.
 
 ## About This Branch
- This is the beta branch of Metrobots' Android vision project for 2017 season.
- The branch is used for developing, evaluating, and integrating different functionality for the vision project.
+This is the beta branch of Metrobots' Android vision project for 2017 season.
+The branch is used for developing, evaluating, and integrating different functionality for the vision project.
  
- The features implement in this branch are intend to help the vision group gains a better understanding of Android App development as well as Java programming. The functionality integrated in this branch may not be used directly in the other branches since the naming method could be inconsistent with the others.
+The features implement in this branch are intend to help the vision group gains a better understanding of Android App development as well as Java programming. The functionality integrated in this branch may not be used directly in the other branches since the naming method could be inconsistent with the others.
+ 
+Discussions about Android and vision developing with peers and mentors are always encouraged as developing proceed.
  
 ## Integrated Functionality
 The following features were already integrated in this branch.
