@@ -22,4 +22,9 @@
         android:orderInCategory="100"
         android:title="@string/item_4"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/set_hsv"
+        android:orderInCategory="100"
+        android:title="@string/item_5"
+        app:showAsAction="never" />
 </menu>

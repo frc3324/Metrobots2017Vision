@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import net.sf.lipermi.net.Server;
@@ -134,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
                 DispHsv(hsvType, Hsv);     // Display center hav value in a new dialog window
 
                 break;
+            case R.id.set_hsv:
+                // TODO: display hsv setting window
+                setHsv();
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -207,4 +213,30 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog=builder.create();
         dialog.show();
     }
+
+    /**
+     *
+     */
+    private void setHsv() {
+        // TODO: helper method to set hsv: good hsv and thresholds, or upper and lower bound
+        builder=new AlertDialog.Builder(this);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setTitle(R.string.hsv_setting_title);
+
+        LinearLayout loginDialog= (LinearLayout) getLayoutInflater().inflate(R.layout.hsv_input,null);
+        builder.setView(loginDialog);
+
+        builder.setPositiveButton(R.string.hsv_setting_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();  // Close dialog
+            }
+        });
+
+        builder.setCancelable(true);
+        AlertDialog dialog=builder.create();
+        dialog.show();
+    }
+
+
 }

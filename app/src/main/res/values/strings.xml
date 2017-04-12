@@ -2,11 +2,14 @@
     <string name="app_name">BotCV</string>
     <string name="item_2">Change Alliance</string>
     <string name="item_1">Enable USB Tethering</string>
-    <string name="item_3">Get SC HSV Value</string>
+    <string name="item_3">Screen Center HSV</string>
     <string name="dialog_disp_hsv_value">Here is the HSV Values:</string>
     <string name="close">Got It!</string>
     <string name="hsv_disp_title">HSV Value</string>
     <string name="hsv_disp_msg">Hue Saturation Lightness</string>
     <string name="hsv_disp_button">Got it!</string>
-    <string name="item_4">Get CC HSV Value</string>
+    <string name="item_4">Contour Center HSV</string>
+    <string name="item_5">Set HSV</string>
+    <string name="hsv_setting_title">HSV Settings</string>
+    <string name="hsv_setting_button">OK</string>
 </resources>
