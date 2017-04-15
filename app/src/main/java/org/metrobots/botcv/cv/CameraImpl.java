@@ -48,9 +48,13 @@ public class CameraImpl implements CvCameraViewListener {
     private String measureInfoWidth = "Width";
     private String measureInfoHeight = "Height";
 
-
+    //relevant logging variables
     private static double relativeDeltaX = 0.0;
     private static double relativeDeltaY = 0.0;
+    private static int oldContourCount = 0;
+    private static String oldCenterHSVString = "";
+    private static int frameNumber = 0;
+
     private static final double PERFECT_X = 360; //temporary values
     private static final double PERFECT_Y = 220;
 
@@ -190,11 +194,11 @@ public class CameraImpl implements CvCameraViewListener {
         hsvvalue[1] = hsvvalue[1] * 100 / 255;
         hsvvalue[2] = hsvvalue[2] * 100 / 255;
 
-        //Log.i("H", "" + hsvvalue[0]);
-        //Log.i("S", "" + hsvvalue[1]);
-        //Log.i("V", "" + hsvvalue[2]);
+        Log.i("H", "" + hsvvalue[0]);
+        Log.i("S", "" + hsvvalue[1]);
+        Log.i("V", "" + hsvvalue[2]);
 
-        Logger.log("HSV", "H: " + (int)hsvvalue[0] + " S: " + (int)hsvvalue[1] + " V: " + (int)hsvvalue[2]);
+        //Logger.log("HSV", "H: " + (int)hsvvalue[0] + " S: " + (int)hsvvalue[1] + " V: " + (int)hsvvalue[2]);
 
         //Finds the contours in the thresholded frame
         Imgproc.findContours(contourFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -220,12 +224,15 @@ public class CameraImpl implements CvCameraViewListener {
             int max2 = 0;
             double maxArea = 0;
             double maxArea2 = 0;
+            int contourNumber = 0;
+
+            double contourAreaMin = 400;
             //Sets up loop to go through all contours
             for (int a = 0; a < contours.size(); a++) { //was <
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
                 //Doesn't look at contours lower than 900
-                if (s2 < 50) { //50 needs further testing
+                if (s2 < 900) { //900 = arbitrary number
                     continue;
                 }
                 //Checks the area against the other areas of the contours to find out which is largest
@@ -236,6 +243,9 @@ public class CameraImpl implements CvCameraViewListener {
                 } else if (s2 > maxArea2){
                     max2 = a;
                     maxArea2 = Imgproc.contourArea(contours.get(max2));
+                }
+                if (s2 > contourAreaMin){
+                    contourNumber += 1;
                 }
             }
 
@@ -285,16 +295,43 @@ public class CameraImpl implements CvCameraViewListener {
                 double contourCentery = hsv.height()/2;
 
                 double[] centerHSV = hsv.get((int)contourCenterx, (int)contourCentery);
-                //165 100 6
+
                 centerHSV[0] = centerHSV[0] * 360 / 255;
                 centerHSV[1] = centerHSV[1] * 100 / 255;
                 centerHSV[2] = centerHSV[2] * 100 / 255;
 
-                Logger.log("Main Contour HSV", "H: " + (int)centerHSV[0] + " S: " + (int)centerHSV[1] + " V: " + (int)centerHSV[2]);
-
-                Log.i("Main Contour HSV", "H: " + (int)centerHSV[0] + " S: " + (int)centerHSV[1] + " V: " + (int)centerHSV[2]);
-
                 centerHSVString = "H: " + (int)centerHSV[0] + " S: " + (int)centerHSV[1] + " V: " + (int)centerHSV[2];
+                //logging segment
+                if (frameNumber == 0 ) {
+                    if (centerHSVString != oldCenterHSVString) {
+                        Logger.log("Main Contour HSV", centerHSVString);
+                    }
+                    frameNumber = 1;
+                } else {
+                    if (frameNumber >= 4) {
+                        frameNumber = 0;
+                    } else {
+                        frameNumber += 1;
+                    }
+                }
+                oldCenterHSVString = centerHSVString;
+
+                if ((PERFECT_X - center.y) != relativeDeltaX) {
+                    Logger.log("xOffset", "value: " + (PERFECT_X - center.x));
+                }
+                if ((PERFECT_Y - center.y) != relativeDeltaY) {
+                    Logger.log("yOffset", "value: " + (PERFECT_Y - center.y));
+                }
+                if (contourNumber != oldContourCount) {
+                    Logger.log("cCount", "value: " + contourNumber);
+                    oldContourCount = contourNumber;
+                }
+
+
+
+                seeMagnitude = "The magnitude " + magnitude;
+                Log.i(MAGNITUDE, seeMagnitude);
+
 
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
@@ -337,11 +374,6 @@ public class CameraImpl implements CvCameraViewListener {
                     magnitude = 0;
                 }
 
-                Logger.log("xOffset", "value: " + relativeDeltaX);
-                Logger.log("yOffset", "value: " + relativeDeltaY);
-
-                seeMagnitude = "The magnitude " + magnitude;
-                Log.i(MAGNITUDE, seeMagnitude);
                 //System.out.println(magnitude);
 
                 //Finding the middle of the countoured area on the screen
@@ -384,7 +416,7 @@ public class CameraImpl implements CvCameraViewListener {
             }
             return mat; //frame
         } catch (Exception e) {
-            //In case no contours are found, returns
+            //In case no contours are found, returns the error status
             status = 2;
         }
         //Returns the original image with drawn contours and shape identifiers
@@ -412,3 +444,4 @@ public class CameraImpl implements CvCameraViewListener {
     public int getYOffset() { return yOffset; }
 
 }
+
