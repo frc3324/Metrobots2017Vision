@@ -190,9 +190,9 @@ public class CameraImpl implements CvCameraViewListener {
         hsvvalue[1] = hsvvalue[1] * 100 / 255;
         hsvvalue[2] = hsvvalue[2] * 100 / 255;
 
-        Log.i("H", "" + hsvvalue[0]);
-        Log.i("S", "" + hsvvalue[1]);
-        Log.i("V", "" + hsvvalue[2]);
+        //Log.i("H", "" + hsvvalue[0]);
+        //Log.i("S", "" + hsvvalue[1]);
+        //Log.i("V", "" + hsvvalue[2]);
 
         Logger.log("HSV", "H: " + (int)hsvvalue[0] + " S: " + (int)hsvvalue[1] + " V: " + (int)hsvvalue[2]);
 
@@ -225,7 +225,7 @@ public class CameraImpl implements CvCameraViewListener {
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
                 //Doesn't look at contours lower than 900
-                if (s2 < 900) { //900 = arbitrary number
+                if (s2 < 50) { //50 needs further testing
                     continue;
                 }
                 //Checks the area against the other areas of the contours to find out which is largest
@@ -285,14 +285,16 @@ public class CameraImpl implements CvCameraViewListener {
                 double contourCentery = hsv.height()/2;
 
                 double[] centerHSV = hsv.get((int)contourCenterx, (int)contourCentery);
-
+                //165 100 6
                 centerHSV[0] = centerHSV[0] * 360 / 255;
                 centerHSV[1] = centerHSV[1] * 100 / 255;
                 centerHSV[2] = centerHSV[2] * 100 / 255;
 
-                Logger.log("Main Contour HSV", "H: " + centerHSV[0] + " S: " + centerHSV[1] + " V: " + centerHSV[2]);
+                Logger.log("Main Contour HSV", "H: " + (int)centerHSV[0] + " S: " + (int)centerHSV[1] + " V: " + (int)centerHSV[2]);
 
-                centerHSVString = "H: " + centerHSV[0] + " S: " + centerHSV[1] + " V: " + centerHSV[2];
+                Log.i("Main Contour HSV", "H: " + (int)centerHSV[0] + " S: " + (int)centerHSV[1] + " V: " + (int)centerHSV[2]);
+
+                centerHSVString = "H: " + (int)centerHSV[0] + " S: " + (int)centerHSV[1] + " V: " + (int)centerHSV[2];
 
                 relativeDeltaX = (PERFECT_X - center.x);
                 relativeDeltaY = (PERFECT_Y - center.y); //print out message in logcat so there is no error if no contour found
@@ -382,7 +384,7 @@ public class CameraImpl implements CvCameraViewListener {
             }
             return mat; //frame
         } catch (Exception e) {
-            //In case no contours are found, returns the error status
+            //In case no contours are found, returns
             status = 2;
         }
         //Returns the original image with drawn contours and shape identifiers
@@ -410,4 +412,3 @@ public class CameraImpl implements CvCameraViewListener {
     public int getYOffset() { return yOffset; }
 
 }
-

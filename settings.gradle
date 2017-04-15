@@ -1,1 +1,1 @@
-include ':app', ':openCVLibrary310', ':correctopencv'
+include ':app', ':openCVLibrary310'

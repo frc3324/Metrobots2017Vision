@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import android.widget.CompoundButton;
 
 import net.sf.lipermi.net.Server;
 
@@ -160,11 +162,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchAlliance() {
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
 
+                } else {
+                    // The toggle is disabled
+                }
+            }
+        });
     }
 
     public void toast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
     public PeripheralManager getPeripheralManager() {
