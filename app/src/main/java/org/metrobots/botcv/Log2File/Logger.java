@@ -42,13 +42,15 @@ public class Logger {
      */
     public static void init(String directory, String fileName) {
         long time = System.currentTimeMillis();
-        SimpleDateFormat formater = new SimpleDateFormat("HH:mm:SS  dd-MM-yyyy");
+        SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss  dd-MM-yyyy");
 
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + "/"+directory+"/");
         dir.getParentFile().mkdirs();
         file = new File(dir, formater.format(time) + ".txt"); //was fileName
         file.getParentFile().mkdir();
+
+        file.setReadOnly();
     }
     /**
      * Write to file with custom tag.
@@ -86,7 +88,9 @@ public class Logger {
     private static void writeStringToAFile(String tag, final String data, File file) {
         long time = System.currentTimeMillis();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:SS");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+
+
 
         BufferedWriter out=null;
         try {

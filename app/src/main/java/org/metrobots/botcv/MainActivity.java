@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.Toast;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private PeripheralManager peripheralManager;
 
     private final String TAG = "MainActivity";
+
+    private boolean isAllianceRed = false;
 
     static {
         System.loadLibrary("opencv_java3");
@@ -160,7 +163,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchAlliance() {
-
+        if(isAllianceRed) {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.blueAlliance)));
+            isAllianceRed = !isAllianceRed;
+        }
+        else {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.redAlliance)));
+            isAllianceRed = !isAllianceRed;
+        }
     }
 
     public void toast(String text) {

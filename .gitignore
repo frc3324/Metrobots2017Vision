@@ -129,3 +129,4 @@ openCVLibrary310/build/intermediates/rs/
 openCVLibrary310/build/intermediates/shaders/
 openCVLibrary310/build/intermediates/transforms/
 openCVLibrary310/build/tmp/
+!/app/src/main/jnilibs/*
