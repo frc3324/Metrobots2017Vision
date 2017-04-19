@@ -94,12 +94,15 @@ public class BotCameraView extends CameraBridgeViewBase implements Camera.Previe
                     //params.setPictureSize(176, 144);
                     //params.setPreviewFrameRate(30000);
                     //params.setPreviewSize(176, 144);
+                    //params.getSupportedWhiteBalance();
                     //params.setWhiteBalance(Parameters.WHITE_BALANCE_WARM_FLUORESCENT);
 
                     mCamera.setParameters(params);
                     //[auto, incandescent, fluorescent, warm-fluorescent, daylight, cloudy-daylight, twilight, shade]
                     //warm-fluorescent for home field
                     orientCamera();
+
+                    //Log.i("Supported wb: ", params.getSupportedWhiteBalance());
                 }
                 catch (Exception e){
                     Log.e(TAG, "Camera is not available (in use or does not exist): " + e.getLocalizedMessage());

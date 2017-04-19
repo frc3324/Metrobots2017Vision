@@ -155,7 +155,7 @@ public class CameraImpl implements CvCameraViewListener {
         int goodH = 80;
         int goodS = 93;
         int goodV = 100;
-        int thresholdH = 40;  //was 40
+        int thresholdH = 30;  //was 40
         int thresholdS = 10; //was 40
         int thresholdV = 10; //was 30
 
@@ -194,9 +194,9 @@ public class CameraImpl implements CvCameraViewListener {
         hsvvalue[1] = hsvvalue[1] * 100 / 255;
         hsvvalue[2] = hsvvalue[2] * 100 / 255;
 
-        Log.i("H", "" + hsvvalue[0]);
-        Log.i("S", "" + hsvvalue[1]);
-        Log.i("V", "" + hsvvalue[2]);
+        //Log.i("H", "" + hsvvalue[0]);
+        //Log.i("S", "" + hsvvalue[1]);
+        //Log.i("V", "" + hsvvalue[2]);
 
         //Logger.log("HSV", "H: " + (int)hsvvalue[0] + " S: " + (int)hsvvalue[1] + " V: " + (int)hsvvalue[2]);
 
@@ -226,26 +226,30 @@ public class CameraImpl implements CvCameraViewListener {
             double maxArea2 = 0;
             int contourNumber = 0;
 
-            double contourAreaMin = 400;
+            double contourAreaMin = 4.0;
             //Sets up loop to go through all contours
-            for (int a = 0; a < contours.size(); a++) { //was <
+            for (int a = 0; a < contours.size(); a++) {
                 //Gets the area of all of the contours
                 double s2 = Imgproc.contourArea(contours.get(a));
+                Log.i("Contour area ", Double.toString(s2));
                 //Doesn't look at contours lower than 900
-                if (s2 < 900) { //900 = arbitrary number
-                    continue;
-                }
-                //Checks the area against the other areas of the contours to find out which is largest
-                if (s2 > maxArea) {
-                    //Sets largest contour equal to max variable
-                    max = a;
-                    maxArea = Imgproc.contourArea(contours.get(max));
-                } else if (s2 > maxArea2){
-                    max2 = a;
-                    maxArea2 = Imgproc.contourArea(contours.get(max2));
-                }
-                if (s2 > contourAreaMin){
-                    contourNumber += 1;
+                if (s2 > contourAreaMin) {
+                    Log.i("S2 > contourAreaMin ", "It worked!");
+                    //continue;
+                    //Checks the area against the other areas of the contours to find out which is largest
+                    if (s2 > maxArea) {
+                        //Sets largest contour equal to max variable
+                        max = a;
+                        maxArea = Imgproc.contourArea(contours.get(max));
+                        Log.i("Maximum area ", Double.toString(s2));
+                    } else if (s2 > maxArea2) {
+                        max2 = a;
+                        maxArea2 = Imgproc.contourArea(contours.get(max2));
+                    }
+                    if (s2 > contourAreaMin) {
+                        contourNumber += 1;
+                        Log.i("Contour number ", Integer.toString(contourNumber));
+                    }
                 }
             }
 
@@ -357,7 +361,7 @@ public class CameraImpl implements CvCameraViewListener {
                 System.out.print(direction);
 
                 String widthSee = "Direction Thing: " + relativeDeltaX;
-                Log.i(DIRECTION, widthSee);
+                //Log.i(DIRECTION, widthSee);
 
                 //Magnitude is the duration of the movement moving forward
                //10 = arbitrary number //was Math.abs((mat.size().width / 2) - center.x
