@@ -12,5 +12,11 @@
         android:id="@+id/cameraView"
         android:clickable="true" />
 
-
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="ToggleButton" />
+    
 </RelativeLayout>
